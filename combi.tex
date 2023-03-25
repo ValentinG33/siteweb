@@ -1,0 +1,3969 @@
+\documentclass[10pt]{report}
+
+\ifdefined\HCode
+  \def\pgfsysdriver{pgfsys-dvisvgm4ht.def}
+\fi 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PACKAGE IMPORTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[top=3cm,bottom=3cm,left=3.2cm,right=3.2cm,headsep=10pt,letterpaper]{geometry}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz,tikz-3dplot,tikz-cd,tkz-tab,tkz-euclide,pgf,pgfplots}
+\usepackage{xcolor}
+\pgfplotsset{compat=newest}
+
+
+\usepackage[nameinlink]{cleveref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SELF MADE BOX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{tcol_COR}{gray}{0.6} % Color for Corollary
+
+
+
+\tcbset{
+tbox_COR_style/.style={
+    enhanced jigsaw,
+    colback=tcol_COR!10,
+    colframe=tcol_COR!80!black,
+    boxrule=0pt,
+    fonttitle=\sffamily\bfseries,
+    coltitle=black,
+    separator sign={},
+    label separator={},
+    description font=\normalfont\sffamily,
+    description delimiters={(}{)},
+    attach title to upper,
+    after title={\ },
+    frame hidden,borderline west={2pt}{0pt}{tcol_COR},
+    sharp corners,top=2pt,bottom=2pt,left=5pt,right=5pt,
+    before skip=10pt,after skip=10pt,breakable
+},
+}
+
+
+
+
+\newtcbtheorem[no counter,
+    crefname={\color{tcol_COR!50!black} corollary}{\color{tcol_COR!50!black} corollaries},
+    Crefname={\color{tcol_COR!50!black} Corollary}{\color{tcol_COR!50!black} Corollaries}
+    ]{vocab}{Vocabulary}{tbox_COR_style}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SELF MADE COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% STRUCTURE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Font Settings
+\usepackage{avant} 
+\usepackage{mathptmx} 
+\usepackage{microtype} 
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsthm}
+
+\usepackage{titlesec} % Allows customization of titles
+
+\usepackage{graphicx} % Required for including pictures
+
+\usepackage{tikz} % Required for drawing custom shapes
+
+\usepackage[english]{babel} % English language/hyphenation
+
+\usepackage{enumitem} % Customize lists
+\setlist{nolistsep} % Reduce spacing between bullet points and numbered lists
+
+\usepackage{booktabs} % Required for nicer horizontal rules in tables
+
+\usepackage{eso-pic} % Required for specifying an image background in the title page
+
+%----------------------------------------------------------------------------------------
+%	MAIN TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+\usepackage{titletoc} % Required for manipulating the table of contents
+
+\contentsmargin{0cm} % Removes the default margin
+% Chapter text styling
+\titlecontents{chapter}[1.25cm] % Indentation
+{\addvspace{15pt}\large\sffamily\bfseries} % Spacing and font options for chapters 
+{\color{black}\contentslabel[\Large\thecontentslabel]{1.25cm}\color{black}} % Chapter number
+{}  
+{\color{black}\normalsize\sffamily\bfseries\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
+% Section text styling
+\titlecontents{section}[1.25cm] % Indentation
+{\addvspace{5pt}\sffamily\bfseries} % Spacing and font options for sections
+{\contentslabel[\thecontentslabel]{1.25cm}} % Section number
+{}
+{\sffamily\hfill\color{black}\thecontentspage} % Page number
+[]
+% Subsection text styling
+\titlecontents{subsection}[1.25cm] % Indentation
+{\addvspace{1pt}\sffamily\small} % Spacing and font options for subsections
+{\contentslabel[\thecontentslabel]{1.25cm}} % Subsection number
+{}
+{\sffamily\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
+[] 
+
+%----------------------------------------------------------------------------------------
+%	MINI TABLE OF CONTENTS IN CHAPTER HEADS
+%----------------------------------------------------------------------------------------
+
+% Section text styling
+\titlecontents{lsection}[0em] % Indendating
+{\footnotesize\sffamily} % Font settings
+{}
+{}
+{}
+
+% Subsection text styling
+\titlecontents{lsubsection}[.5em] % Indentation
+{\normalfont\footnotesize\sffamily} % Font settings
+{}
+{}
+{}
+ 
+%----------------------------------------------------------------------------------------
+%	PAGE HEADERS
+%----------------------------------------------------------------------------------------
+
+\usepackage{fancyhdr} % Required for header and footer configuration
+
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{\sffamily\normalsize\bfseries\chaptername\ \thechapter.\ #1}{}} % Chapter text font settings
+\renewcommand{\sectionmark}[1]{\markright{\sffamily\normalsize\thesection\hspace{5pt}#1}{}} % Section text font settings
+\fancyhf{} \fancyhead[REO]{\sffamily\normalsize\thepage} % Font setting for the page number in the header
+\fancyhead[LEO]{\leftmark} % Print the current chapter name on the right side of even pages
+\renewcommand{\headrulewidth}{0.5pt} % Width of the rule under the header
+\addtolength{\headheight}{2.5pt} % Increase the spacing around the header slightly
+\renewcommand{\footrulewidth}{0pt} % Removes the rule in the footer
+\fancypagestyle{plain}{\fancyhead{}\renewcommand{\headrulewidth}{0pt}} % Style for when a plain pagestyle is specified
+
+% Removes the header from odd empty pages at the end of chapters
+\makeatletter
+\renewcommand{\cleardoublepage}{
+\clearpage\ifodd\c@page\else
+\hbox{}
+\vspace*{\fill}
+\thispagestyle{empty}
+\newpage
+\fi}
+
+%----------------------------------------------------------------------------------------
+%	THEOREM STYLES
+%----------------------------------------------------------------------------------------
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm} % For math equations, theorems, symbols, etc
+
+\newcommand{\intoo}[2]{\mathopen{]}#1\,;#2\mathclose{[}}
+\newcommand{\ud}{\mathop{\mathrm{{}d}}\mathopen{}}
+\newcommand{\intff}[2]{\mathopen{[}#1\,;#2\mathclose{]}}
+\newtheorem{notation}{Notation}[chapter]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% dedicated to boxed/framed environements %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newtheoremstyle{ocrenumbox}% % Theorem style name
+{0pt}% Space above
+{0pt}% Space below
+{\sffamily}% % Body font
+{}% Indent amount
+{\large\bf\sffamily\color{black}}% % Theorem head font
+{}% Punctuation after theorem head
+{1em}% Space after theorem head
+{\small\sffamily\color{black}\thmname{#1}%\nobreakspace\thmnumber{} Theorem text (e.g. Theorem 2.1)
+\thmnote{\nobreakspace\the\thm@notefont\sffamily\bfseries\color{black}\nobreakspace#3}} % Optional theorem note
+
+\newtheoremstyle{grayman}% % Theorem style name
+{0pt}% Space above
+{0pt}% Space below
+{\sffamily}% % Body font
+{}% Indent amount
+{\large\bf\sffamily\color{black}}% % Theorem head font
+{}% Punctuation after theorem head
+{1em}% Space after theorem head
+{\normalsize\sffamily\color{black}\thmname{#1}%\nobreakspace\thmnumber{} Theorem text (e.g. Theorem 2.1)
+\thmnote{\nobreakspace\the\thm@notefont\sffamily\bfseries\color{black}\nobreakspace#3}} % Optional theorem note
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% dedicated to non-boxed/non-framed environements %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Defines the theorem text style for each type of theorem to one of the three styles above
+\newcounter{dummy} 
+\numberwithin{dummy}{section}
+\theoremstyle{ocrenumbox}
+
+
+
+\newtheorem{definitionT}{Exercise}[]
+\newtheorem{definitionTT}{Solution}[]
+
+\newtheorem{definitionTTT}{Theorem}[]
+\theoremstyle{grayman}
+\newtheorem{definitionTTTT}{Definition}[]
+
+
+%----------------------------------------------------------------------------------------
+%	DEFINITION OF COLORED BOXES
+%----------------------------------------------------------------------------------------
+
+\RequirePackage[framemethod=default,framemethod=tikz]{mdframed} % Required for creating the theorem, definition, exercise and corollary boxes
+% Definition box
+\newmdenv[skipabove=7pt,
+skipbelow=7pt,
+rightline=false,
+leftline=true,
+topline=false,
+bottomline=false,
+linecolor=black,
+innerleftmargin=5pt,
+innerrightmargin=5pt,
+innertopmargin=0pt,
+leftmargin=0cm,
+rightmargin=0cm,
+linewidth=3pt,
+innerbottommargin=0pt]{dBox}	
+
+\newenvironment{exo}{\begin{dBox}\begin{definitionT}}{\end{definitionT}\end{dBox}}
+
+\newmdenv[skipabove=7pt,
+skipbelow=7pt,
+rightline=false,
+%backgroundcolor=black!5,
+leftline=true,
+topline=false,
+bottomline=false,
+linecolor=yellow,
+innerleftmargin=5pt,
+innerrightmargin=5pt,
+innertopmargin=0pt,
+leftmargin=0cm,
+rightmargin=0cm,
+linewidth=3pt,
+innerbottommargin=0pt]{sBox}	
+\newenvironment{sol}{\begin{sBox}\begin{definitionTT}}{\end{definitionTT}\end{sBox}}
+
+\newmdenv[skipabove=7pt,
+skipbelow=7pt,
+rightline=false,
+leftline=true,
+topline=false,
+bottomline=false,
+linecolor=blue,
+innerleftmargin=5pt,
+innerrightmargin=5pt,
+innertopmargin=0pt,
+leftmargin=0cm,
+rightmargin=0cm,
+linewidth=3pt,
+innerbottommargin=0pt]{tBox}	
+\newenvironment{thm}{\begin{tBox}\begin{definitionTTT}}{\end{definitionTTT}\end{tBox}}
+
+\newmdenv[skipabove=7pt,
+skipbelow=7pt,
+rightline=false,
+backgroundcolor=black!3,
+leftline=true,
+topline=false,
+bottomline=false,
+linecolor=gray,
+innerleftmargin=5pt,
+innerrightmargin=5pt,
+innertopmargin=0pt,
+leftmargin=0cm,
+rightmargin=0cm,
+linewidth=3pt,
+innerbottommargin=0pt]{vBox}	
+\newenvironment{voc}{\begin{vBox}\begin{definitionTTTT}}{\end{definitionTTTT}\end{vBox}}
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	SECTION NUMBERING IN THE MARGIN
+%----------------------------------------------------------------------------------------
+
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\llap{\textcolor{black}{\csname the#1\endcsname}\hspace{1em}}}                    
+\renewcommand{\section}{\@startsection{section}{1}{\z@}
+{-4ex \@plus -1ex \@minus -.4ex}
+{1ex \@plus.2ex }
+{\normalfont\large\sffamily\bfseries}}
+\renewcommand{\subsection}{\@startsection {subsection}{2}{\z@}
+{-3ex \@plus -0.1ex \@minus -.4ex}
+{0.5ex \@plus.2ex }
+{\normalfont\sffamily\bfseries}}
+\renewcommand{\subsubsection}{\@startsection {subsubsection}{3}{\z@}
+{-2ex \@plus -0.1ex \@minus -.2ex}
+{.2ex \@plus.2ex }
+{\normalfont\small\sffamily\bfseries}}                        
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}
+{-2ex \@plus-.2ex \@minus .2ex}
+{.1ex}
+{\normalfont\small\sffamily\bfseries}}
+
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER HEADINGS
+%----------------------------------------------------------------------------------------
+
+% The set-up below should be (sadly) manually adapted to the overall margin page septup controlled by the geometry package loaded in the main.tex document. It is possible to implement below the dimensions used in the goemetry package (top,bottom,left,right)... TO BE DONE
+
+
+
+% Numbered chapters with mini tableofcontents
+\def\thechapter{\arabic{chapter}}
+\def\@makechapterhead#1{
+\thispagestyle{empty}
+{\centering \normalfont\sffamily
+\ifnum \c@secnumdepth >\m@ne
+\if@mainmatter
+\startcontents
+\begin{tikzpicture}[]
+\node at (current page.north west)
+{\begin{tikzpicture}[]
+\node[anchor=north west,inner sep=0pt] at (0,0) {};
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Commenting the 3 lines below removes the small contents box in the chapter heading
+%\fill[color=ocre!10!white,opacity=.6] (1cm,0) rectangle (8cm,-7cm);
+%\node[anchor=north west] at (1.1cm,.35cm) {\parbox[t][8cm][t]{6.5cm}{\huge\bfseries\flushleft \printcontents{l}{1}{\setcounter{tocdepth}{2}}}};
+\draw[anchor=west] (5cm,0cm) node [rounded corners=20pt,fill=black!10!white,text opacity=1,draw=black,draw opacity=1,line width=1.5pt,fill opacity=.6,inner sep=12pt]{\huge\sffamily\bfseries\textcolor{black}{\thechapter. #1\strut\makebox[22cm]{}}};
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{tikzpicture}};
+\end{tikzpicture}}
+\par\vspace*{50\p@}
+\fi
+\fi}
+
+% Unnumbered chapters without mini tableofcontents (could be added though) 
+\def\@makeschapterhead#1{
+\thispagestyle{empty}
+{\centering \normalfont\sffamily
+\ifnum \c@secnumdepth >\m@ne
+\if@mainmatter
+\begin{tikzpicture}[remember picture,overlay]
+\node at (current page.north west)
+{\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north west,inner sep=0pt] at (0,0) {};
+\draw[anchor=west] (5cm,-5cm) node [rounded corners=20pt,fill=black!10!white,fill opacity=.6,inner sep=12pt,text opacity=1,draw=black,draw opacity=1,line width=1.5pt]{\huge\sffamily\bfseries\textcolor{black}{#1\strut\makebox[22cm]{}}};
+\end{tikzpicture}};
+\end{tikzpicture}}
+\par\vspace*{100\p@}
+\fi
+\fi
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GRAPH
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usetikzlibrary{positioning,calc,arrows,automata,fit,decorations.pathreplacing}
+
+
+
+\tikzset{
+    between/.style args={#1 and #2}{
+         at = ($(#1)!0.5!(#2)$)
+    }
+}
+\Preamble{xhtml}
+\makeatletter
+% to strip fraction from \textwidth
+\def\striptextwidth#1\textwidth{#1}
+% we must refer to minipage from the css file, because tags are beeing
+% written before we know dimensions
+\newcount\mini@count
+% save original minipage
+\let\oldiimini\@iiiminipage
+% redefine minipage
+\def\@iiiminipage#1#2[#3]#4{%
+% calculate dimensions and save it to macro
+\edef\miniwidth{\strip@pt\dimexpr(\striptextwidth#4pt)*100\relax\%}
+\Css{\#minipage\the\mini@count{width:\miniwidth;}}%
+\oldiimini{#1}{#2}[#3]{#4}
+}
+
+\ConfigureEnv{minipage}{\advance\mini@count by 1\relax\ifvmode\IgnorePar\fi\EndP\HCode{<div class="minipage" align="center" id="minipage\the\mini@count" style="border:1px solid black;">}}
+{\ifvmode\IgnorePar\fi\EndP\HCode{</div>\Hnewline}%
+% we must write dimension here to the css file
+}{}{}
+\makeatother
+\Css{div.minipage {
+ float: left; 
+ }
+}
+\Css{div.minipage:last-child {
+ clear: none;
+ float: right;
+ }
+}
+\Css{ div.minipage + :not(.minipage) {clear:both;overflow:auto;width:100\%;}}
+\begin{document}
+\EndPreamble
+\sffamily
+\tableofcontents
+\chapter{Lecture 1}
+\section{Running time}
+\begin{voc}\leavevmode
+If there is a constant C and a number k such that
+    \[\forall n \ge k,\phantom{a} f(n) \leq C\cdot g(n)\]
+We say that a function f is of order of a function g and write:
+    \[f(n) =O(g(n))\]
+\end{voc}
+It is common to say this problem can be solved in O(f(n)).\\ \\
+\section{Euler path}
+Example of decision problem: Is it possible to draw this figure without going over the same line?\\ \\
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture}
+\draw (0,0) -- (3,0) -- (3,2) -- (0,2) -- (0,0) -- (3,2);
+\draw (0,2) -- (1.5,3) -- (3,2) ;
+\draw (0,2) -- (3,0);
+\end{tikzpicture}
+\end{center}
+\end{minipage} 
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture}
+\draw (0,0) -- node[midway,left] {1}(0,2) -- (3,2) node[midway,above] {2} -- (0,0) node[midway,above] {3} -- (3,0) node[midway,above] {4} -- (3,2) node[midway,right] {5} -- (1.5,3) node[midway,above] {6} -- (0,2) node[midway,above] {7} -- (3,0)node[anchor=north] {8};
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+What if you get the following cases?\\
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture}
+\draw (0,0) -- (3,0) -- (3,2) -- (0,2) -- (0,0) -- (3,2);
+\draw (0,2) -- (3,0);
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture}
+\draw (0,0) -- (3,0) -- (3,2) -- (0,2) -- (0,0);
+\draw (0,2) -- (1.5,3) -- (3,2) ;
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\newpage\phantom{a}
+Is it possible to have a walk around the city, crossing each of the seven bridges only once ?\\
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \includegraphics[width=0.75\textwidth]{Konigsberg_colour37936.jpg}
+    \end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \includegraphics[width=0.5\textwidth]{abstraction.png}
+    \end{center}
+\end{minipage}
+\begin{voc}
+    \textbf{\textcolor{blue}{Eulerian path}}: a path in a finite graph that visits every edge exactly once.
+\end{voc}
+By transforming our problem into a graph, our question amounts to asking whether there is an Eulerian path.
+\begin{thm}\leavevmode
+    \begin{center}
+        A connected graph has an Eulerian path $\Longleftrightarrow$ the number of nodes with odd degree is 0 or 2.
+    \end{center}
+May the number be 0 then the path is a cycle: it starts and finishes on the same node.
+\end{thm}
+The theorem gives a certificate for the existence of an
+Eulerian path but doesn't provide a effective solution.\\\\
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture}
+\draw (0,0) -- node[at end,right,color=red] {3} (3,0) -- node[at end,right,color=red] {3}(3,2)  -- node[at end,left,color=red] {3}(0,2) -- node[at end,left,color=red] {3}(0,0) -- (3,2);
+\draw (0,2) -- (3,0);
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture}
+\draw (0,0) -- node[at end,right,color=blue] {2} (3,0) -- node[at end,right,color=blue] {2}(3,2) --node[at end,left,color=blue] {2} (0,2) --node[at end,left,color=blue] {3} (0,0);
+\draw (0,2) -- node[at end,above,color=blue] {2} (1.5,3) -- (3,2) ;
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+We can also conclude that the people of the city will not be able to cross the city without going over one of the bridges.\\ \\
+We can add-delete bridges to make it Eulerian.This idea leads to the chinese postman problem: What is the minimum number of edges we need to add to make the graph Eulerian? (Efficient algorithm by Jack Edmonds). 
+\section{Dijkstra's algorithm}
+What is the shortest path from A to C ?
+\begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state,"A"] {};
+\node (q1) [state,   above right = of q0,"B"] {};
+\node (q2) [state,  below right  = of q0,"D" left] {};
+\node (q3) [state,  right  = of q1,"C"] {};
+\node (q4) [state,   right = of q2,"E" right] {};
+
+\path [-stealth, thick]
+    (q0) edge node {10}   (q1)
+    (q0) edge node[below,left] {5}   (q2)
+    (q1) edge node {1}   (q3)
+    (q2) edge node[below] {2}   (q4)
+    (q1) edge[bend left=10] node[right] {2}   (q2)
+    (q2) edge[bend left=10] node[left] {3}   (q1)
+    (q3) edge[bend left=10] node[right] {4}   (q4)
+    (q4) edge[bend left=10] node[left] {6}   (q3)
+    (q4) edge[bend left=90] node[left,below] {7}   (q0);
+    
+\end{tikzpicture}
+\end{center}
+\begin{minipage}{0.5\textwidth}
+Start by setting the distance from A to A to zero in the node.\\ \\
+The color yellow indicates the final answer.
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.7cm}]
+ 
+\node (q0) [state,"A",fill =yellow] {0};
+\node (q1) [state,   above right = of q0,"B"] {};
+\node (q2) [state,  below right  = of q0,"D" left] {};
+\node (q3) [state,  right  = of q1,"C"] {};
+\node (q4) [state,   right = of q2,"E" right] {};
+
+\path [-stealth, thick]
+    (q0) edge node {10}   (q1)
+    (q0) edge node[below,left] {5}   (q2)
+    (q1) edge node {1}   (q3)
+    (q2) edge node[below] {2}   (q4)
+    (q1) edge[bend left=10] node[right] {2}   (q2)
+    (q2) edge[bend left=10] node[left] {3}   (q1)
+    (q3) edge[bend left=10] node[right] {4}   (q4)
+    (q4) edge[bend left=10] node[left] {6}   (q3)
+    (q4) edge[bend left=90] node[left,below] {7}   (q0);
+    
+\end{tikzpicture}
+\end{center}
+    
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+For the node that was just made yellow, check what you
+can reach by using its outgoing arcs.\\ \\
+Finalize the smallest number that is not yellow yet
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.7cm}]
+ 
+\node (q0) [state,"A",fill =yellow!20] {0};
+\node (q1) [state,   above right = of q0,"B"] {$10$};
+\node (q2) [state,  below right  = of q0,"D" left,fill =yellow] {$5$};
+\node (q3) [state,  right  = of q1,"C"] {};
+\node (q4) [state,   right = of q2,"E" right] {};
+
+\path [-stealth, thick]
+    (q0) edge node {10}   (q1)
+    (q0) edge node[below,left] {5}   (q2)
+    (q1) edge node {1}   (q3)
+    (q2) edge node[below] {2}   (q4)
+    (q1) edge[bend left=10] node[right] {2}   (q2)
+    (q2) edge[bend left=10] node[left] {3}   (q1)
+    (q3) edge[bend left=10] node[right] {4}   (q4)
+    (q4) edge[bend left=10] node[left] {6}   (q3)
+    (q4) edge[bend left=90] node[left,below] {7}   (q0);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+Check everything you can reach by using 1 arc from
+the node that was last made yellow. \\ \\
+Update numbers if you found a shorter path.\\ \\
+Finalize the smallest number that is not yet yellow.
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.7cm}]
+ 
+\node (q0) [state,"A",fill =yellow!20] {0};
+\node (q1) [state,   above right = of q0,"B"] {8};
+\node (q2) [state,  below right  = of q0,"D" left,fill =yellow!20] {$5$};
+\node (q3) [state,  right  = of q1,"C"] {};
+\node (q4) [state,   right = of q2,"E" right,fill =yellow] {7};
+
+\path [-stealth, thick]
+    (q0) edge node {10}   (q1)
+    (q0) edge node[below,left] {5}   (q2)
+    (q1) edge node {1}   (q3)
+    (q2) edge node[below] {2}   (q4)
+    (q1) edge[bend left=10] node[right] {2}   (q2)
+    (q2) edge[bend left=10] node[left] {3}   (q1)
+    (q3) edge[bend left=10] node[right] {4}   (q4)
+    (q4) edge[bend left=10] node[left] {6}   (q3)
+    (q4) edge[bend left=90] node[left,below] {7}   (q0);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+Ignore arcs that point back to something that was
+already finalized \\ \\
+Finalize the smallest number that is not yet yellow
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.7cm}]
+ 
+\node (q0) [state,"A",fill =yellow!20] {0};
+\node (q1) [state,   above right = of q0,"B",fill =yellow] {8};
+\node (q2) [state,  below right  = of q0,"D" left,fill =yellow!20] {$5$};
+\node (q3) [state,  right  = of q1,"C"] {13};
+\node (q4) [state,   right = of q2,"E" right,fill =yellow!20] {7};
+
+\path [-stealth, thick]
+    (q0) edge node {10}   (q1)
+    (q0) edge node[below,left] {5}   (q2)
+    (q1) edge node {1}   (q3)
+    (q2) edge node[below] {2}   (q4)
+    (q1) edge[bend left=10] node[right] {2}   (q2)
+    (q2) edge[bend left=10] node[left] {3}   (q1)
+    (q3) edge[bend left=10] node[right] {4}   (q4)
+    (q4) edge[bend left=10] node[left] {6}   (q3)
+    (q4) edge[bend left=90] node[left,below] {7}   (q0);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+Ignore arcs that point back to something that was
+already finalized \\ \\
+Finalize the smallest number that is not yet yellow \\ \\
+When the destination node is yellow, we are done.\\ \\
+Note: in this case the destination was the last node to
+become yellow, but this is not always the case.
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.7cm}]
+ 
+\node (q0) [state,"A",fill =yellow!20] {0};
+\node (q1) [state,   above right = of q0,"B",fill =yellow!20] {8};
+\node (q2) [state,  below right  = of q0,"D" left,fill =yellow!20] {5};
+\node (q3) [state,  right  = of q1,"C",fill=yellow] {9};
+\node (q4) [state,   right = of q2,"E" right,fill =yellow!20] {7};
+
+\path [-stealth, thick]
+    (q0) edge node {10}   (q1)
+    (q0) edge node[below,left] {5}   (q2)
+    (q1) edge node {1}   (q3)
+    (q2) edge node[below] {2}   (q4)
+    (q1) edge[bend left=10] node[right] {2}   (q2)
+    (q2) edge[bend left=10] node[left] {3}   (q1)
+    (q3) edge[bend left=10] node[right] {4}   (q4)
+    (q4) edge[bend left=10] node[left] {6}   (q3)
+    (q4) edge[bend left=90] node[left,below] {7}   (q0);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+Does Dijkstra’s algorithm give the optimal solution in any graph?
+\section{Greedy algorithms}
+A greedy algorithm extends its wealth (the solution
+being constructed) by taking the step with highest
+immediate gain.Greedy algorithms are often sub-optimal but they can be optimal.We will see that through Minimal
+Spanning Tree problem.
+\begin{center}
+Problem: laying cables
+\end{center}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{lay2.png}
+    \end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{lay3.png}
+    \end{center}
+\end{minipage}
+\begin{voc}\phantom{a}\\
+A \textbf{tree} is a connected graph without cycles.\\
+A \textbf{spanning tree} of a graph is a tree that contains all the vertices of the graph and a subset of its edges.
+\end{voc}
+A graph may have many spanning trees:
+\begin{center}
+    \includegraphics[width = 0.85\textwidth]{tree.png}
+\end{center}
+\begin{voc}
+The Minimum Spanning Tree for a given graph is the
+Spanning Tree of minimum cost for that graph.
+\begin{center}
+    \includegraphics[width = 0.75\textwidth]{minimumst-removebg-preview.png}
+\end{center}
+
+\end{voc}
+We can imagine several versions of such a greedy
+algorithms and they may have different efficiencies.
+\section{Kruskal's Algorithm}
+This algorithm creates a forest of trees. Initially the
+forest consists of n single node trees (and no edges). At
+each step, we add one edge (the cheapest one) so that it
+joins two trees together. If it were to form a cycle, skip
+that edge (it would not be needed).\\ \\
+The steps are:
+\begin{itemize}
+    \item The forest is constructed  with each node in a separate tree.
+    \item The edges are placed in a priority queue.
+    \item Until we've added $n- 1$ edges,\begin{enumerate}
+        \item Extract the cheapest edge from the queue
+        \item If it forms a cycle, reject it
+        \item Else add it to the forest. Adding it to the forest will join two trees together.
+    \end{enumerate}
+
+
+\end{itemize}
+Every step will have joined two trees in the forest together, so that at the end, there will only be one tree.\\
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q] {C};
+\node (q3) [state,  below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2] {F};
+\node (q8) [state,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-] (q2) to["2"] (q8);
+\draw[-] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state] {A};
+\node (q1) [state,  below = of q0] {B};
+\node (q2) [state,  below = of q1] {B};
+\node (q3) [state,  below = of q2] {C};
+\node (q4) [state,  below = of q3] {D};
+\node (q5) [state,  below = of q4] {F};
+\node (q6) [state,  below = of q5] {G};
+\node (q7) [state,  below = of q6] {H};
+\node (q8) [state,  right = of q0] {B};
+\node (q9) [state,  below = of q8] {C};
+\node (q10) [state,  below = of q9] {J};
+\node (q11) [state,  below = of q10] {F};
+\node (q12) [state,  below = of q11] {J};
+\node (q13) [state,  below = of q12] {G};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8] {A};
+\node (q17) [state,  below = of q16] {B};
+\node (q18) [state,  below = of q17] {C};
+\node (q19) [state,  below = of q18] {D};
+\node (q20) [state,  below = of q19] {E};
+\node (q21) [state,  below = of q20] {F};
+\node (q22) [state,  below = of q21] {G};
+\node (q23) [state,  below = of q22] {I};
+\node (q24) [state,  right = of q16] {D};
+\node (q25) [state,  below = of q24] {D};
+\node (q26) [state,  below = of q25] {E};
+\node (q27) [state,  below = of q26] {H};
+\node (q28) [state,  below = of q27] {G};
+\node (q29) [state,  below = of q28] {I};
+\node (q30) [state,  below = of q29] {J};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["4"]   (q8);
+\draw(q1) to["4"]   (q9);
+\draw(q2) to["10"]   (q10);
+\draw(q3) to["1"]   (q11);
+\draw(q4) to["6"]   (q12);
+\draw(q5) to["3"]   (q13);
+\draw(q6) to["3"]   (q14);
+\draw(q7) to["2"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["4"]   (q25);
+\draw(q18) to["2"]   (q26);
+\draw(q19) to["5"]   (q27);
+\draw(q20) to["2"]   (q28);
+\draw(q21) to["5"]   (q29);
+\draw(q22) to["4"]   (q30);
+\draw(q23) to["3"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+The edges are placed in a priority queue:  sorting them
+makes the algorithm easier to visualize.\\
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q] {C};
+\node (q3) [state,  below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2] {F};
+\node (q8) [state,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-] (q2) to["2"] (q8);
+\draw[-] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state] {A};
+\node (q1) [state,  below = of q0] {C};
+\node (q2) [state,  below = of q1] {H};
+\node (q3) [state,  below = of q2] {G};
+\node (q4) [state,  below = of q3] {A};
+\node (q5) [state,  below = of q4] {B};
+\node (q6) [state,  below = of q5] {F};
+\node (q7) [state,  below = of q6] {D};
+\node (q8) [state,  right = of q0] {D};
+\node (q9) [state,  below = of q8] {E};
+\node (q10) [state,  below = of q9] {J};
+\node (q11) [state,  below = of q10] {I};
+\node (q12) [state,  below = of q11] {B};
+\node (q13) [state,  below = of q12] {C};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8] {C};
+\node (q17) [state,  below = of q16] {E};
+\node (q18) [state,  below = of q17] {F};
+\node (q19) [state,  below = of q18] {I};
+\node (q20) [state,  below = of q19] {B};
+\node (q21) [state,  below = of q20] {G};
+\node (q22) [state,  below = of q21] {D};
+\node (q23) [state,  below = of q22] {B};
+\node (q24) [state,  right = of q16] {F};
+\node (q25) [state,  below = of q24] {G};
+\node (q26) [state,  below = of q25] {G};
+\node (q27) [state,  below = of q26] {J};
+\node (q28) [state,  below = of q27] {D};
+\node (q29) [state,  below = of q28] {J};
+\node (q30) [state,  below = of q29] {H};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["1"]   (q8);
+\draw(q1) to["2"]   (q9);
+\draw(q2) to["2"]   (q10);
+\draw(q3) to["3"]   (q11);
+\draw(q4) to["4"]   (q12);
+\draw(q5) to["4"]   (q13);
+\draw(q6) to["5"]   (q14);
+\draw(q7) to["6"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["2"]   (q25);
+\draw(q18) to["3"]   (q26);
+\draw(q19) to["3"]   (q27);
+\draw(q20) to["4"]   (q28);
+\draw(q21) to["4"]   (q29);
+\draw(q22) to["5"]   (q30);
+\draw(q23) to["10"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\phantom{a}\\
+\noindent\rule{\textwidth}{0.4pt}
+\phantom{a}\\
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q] {C};
+\node (q3) [state,fill=blue!20 , below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2] {F};
+\node (q8) [state,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-] (q2) to["2"] (q8);
+\draw[-] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=white] {A};
+\node (q1) [state,  below = of q0] {C};
+\node (q2) [state,  below = of q1] {H};
+\node (q3) [state,  below = of q2] {G};
+\node (q4) [state,  below = of q3] {A};
+\node (q5) [state,  below = of q4] {B};
+\node (q6) [state,  below = of q5] {F};
+\node (q7) [state,  below = of q6] {D};
+\node (q8) [state,fill=white,  right = of q0] {D};
+\node (q9) [state,  below = of q8] {E};
+\node (q10) [state,  below = of q9] {J};
+\node (q11) [state,  below = of q10] {I};
+\node (q12) [state,  below = of q11] {B};
+\node (q13) [state,  below = of q12] {C};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8] {C};
+\node (q17) [state,  below = of q16] {E};
+\node (q18) [state,  below = of q17] {F};
+\node (q19) [state,  below = of q18] {I};
+\node (q20) [state,  below = of q19] {B};
+\node (q21) [state,  below = of q20] {G};
+\node (q22) [state,  below = of q21] {D};
+\node (q23) [state,  below = of q22] {B};
+\node (q24) [state,  right = of q16] {F};
+\node (q25) [state,  below = of q24] {G};
+\node (q26) [state,  below = of q25] {G};
+\node (q27) [state,  below = of q26] {J};
+\node (q28) [state,  below = of q27] {D};
+\node (q29) [state,  below = of q28] {J};
+\node (q30) [state,  below = of q29] {H};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["1"]   (q8);
+\draw(q1) to["2"]   (q9);
+\draw(q2) to["2"]   (q10);
+\draw(q3) to["3"]   (q11);
+\draw(q4) to["4"]   (q12);
+\draw(q5) to["4"]   (q13);
+\draw(q6) to["5"]   (q14);
+\draw(q7) to["6"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["2"]   (q25);
+\draw(q18) to["3"]   (q26);
+\draw(q19) to["3"]   (q27);
+\draw(q20) to["4"]   (q28);
+\draw(q21) to["4"]   (q29);
+\draw(q22) to["5"]   (q30);
+\draw(q23) to["10"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q,fill=blue!20] {C};
+\node (q3) [state,fill=blue!20 , below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2,fill=blue!20] {F};
+\node (q8) [state,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=white] {A};
+\node (q1) [state,  below = of q0] {C};
+\node (q2) [state,  below = of q1] {H};
+\node (q3) [state,  below = of q2] {G};
+\node (q4) [state,  below = of q3] {A};
+\node (q5) [state,  below = of q4] {B};
+\node (q6) [state,  below = of q5] {F};
+\node (q7) [state,  below = of q6] {D};
+\node (q8) [state,fill=white,  right = of q0] {D};
+\node (q9) [state,  below = of q8] {E};
+\node (q10) [state,  below = of q9] {J};
+\node (q11) [state,  below = of q10] {I};
+\node (q12) [state,  below = of q11] {B};
+\node (q13) [state,  below = of q12] {C};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8,fill=white] {C};
+\node (q17) [state,  below = of q16] {E};
+\node (q18) [state,  below = of q17] {F};
+\node (q19) [state,  below = of q18] {I};
+\node (q20) [state,  below = of q19] {B};
+\node (q21) [state,  below = of q20] {G};
+\node (q22) [state,  below = of q21] {D};
+\node (q23) [state,  below = of q22] {B};
+\node (q24) [state,  right = of q16,,fill=white] {F};
+\node (q25) [state,  below = of q24] {G};
+\node (q26) [state,  below = of q25] {G};
+\node (q27) [state,  below = of q26] {J};
+\node (q28) [state,  below = of q27] {D};
+\node (q29) [state,  below = of q28] {J};
+\node (q30) [state,  below = of q29] {H};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["1"]   (q8);
+\draw(q1) to["2"]   (q9);
+\draw(q2) to["2"]   (q10);
+\draw(q3) to["3"]   (q11);
+\draw(q4) to["4"]   (q12);
+\draw(q5) to["4"]   (q13);
+\draw(q6) to["5"]   (q14);
+\draw(q7) to["6"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["2"]   (q25);
+\draw(q18) to["3"]   (q26);
+\draw(q19) to["3"]   (q27);
+\draw(q20) to["4"]   (q28);
+\draw(q21) to["4"]   (q29);
+\draw(q22) to["5"]   (q30);
+\draw(q23) to["10"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\phantom{a}\\
+\noindent\rule{\textwidth}{0.4pt}
+\phantom{a}\\
+
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q,fill=blue!20] {C};
+\node (q3) [state,fill=blue!20 , below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2,fill=blue!20] {F};
+\node (q8) [state,  below left = of q2,fill=blue!20] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=white] {A};
+\node (q1) [state,fill=white,  below = of q0] {C};
+\node (q2) [state,  below = of q1] {H};
+\node (q3) [state,  below = of q2] {G};
+\node (q4) [state,  below = of q3] {A};
+\node (q5) [state,  below = of q4] {B};
+\node (q6) [state,  below = of q5] {F};
+\node (q7) [state,  below = of q6] {D};
+\node (q8) [state,fill=white,  right = of q0] {D};
+\node (q9) [state,fill=white,  below = of q8] {E};
+\node (q10) [state,  below = of q9] {J};
+\node (q11) [state,  below = of q10] {I};
+\node (q12) [state,  below = of q11] {B};
+\node (q13) [state,  below = of q12] {C};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8,fill=white] {C};
+\node (q17) [state,  below = of q16] {E};
+\node (q18) [state,  below = of q17] {F};
+\node (q19) [state,  below = of q18] {I};
+\node (q20) [state,  below = of q19] {B};
+\node (q21) [state,  below = of q20] {G};
+\node (q22) [state,  below = of q21] {D};
+\node (q23) [state,  below = of q22] {B};
+\node (q24) [state,  right = of q16,,fill=white] {F};
+\node (q25) [state,  below = of q24] {G};
+\node (q26) [state,  below = of q25] {G};
+\node (q27) [state,  below = of q26] {J};
+\node (q28) [state,  below = of q27] {D};
+\node (q29) [state,  below = of q28] {J};
+\node (q30) [state,  below = of q29] {H};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["1"]   (q8);
+\draw(q1) to["2"]   (q9);
+\draw(q2) to["2"]   (q10);
+\draw(q3) to["3"]   (q11);
+\draw(q4) to["4"]   (q12);
+\draw(q5) to["4"]   (q13);
+\draw(q6) to["5"]   (q14);
+\draw(q7) to["6"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["2"]   (q25);
+\draw(q18) to["3"]   (q26);
+\draw(q19) to["3"]   (q27);
+\draw(q20) to["4"]   (q28);
+\draw(q21) to["4"]   (q29);
+\draw(q22) to["5"]   (q30);
+\draw(q23) to["10"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q,fill=blue!20] {C};
+\node (q3) [state,fill=blue!20 , below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2,fill=blue!20] {F};
+\node (q8) [state,  below left = of q2,fill=blue!20] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq,fill=blue!20] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-,red] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=white] {A};
+\node (q1) [state,fill=white,  below = of q0] {C};
+\node (q2) [state,  below = of q1] {H};
+\node (q3) [state,  below = of q2] {G};
+\node (q4) [state,  below = of q3] {A};
+\node (q5) [state,  below = of q4] {B};
+\node (q6) [state,  below = of q5] {F};
+\node (q7) [state,  below = of q6] {D};
+\node (q8) [state,fill=white,  right = of q0] {D};
+\node (q9) [state,fill=white,  below = of q8] {E};
+\node (q10) [state,  below = of q9] {J};
+\node (q11) [state,  below = of q10] {I};
+\node (q12) [state,  below = of q11] {B};
+\node (q13) [state,  below = of q12] {C};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8,fill=white] {C};
+\node (q17) [state,fill=white, below = of q16] {E};
+\node (q18) [state,  below = of q17] {F};
+\node (q19) [state,  below = of q18] {I};
+\node (q20) [state,  below = of q19] {B};
+\node (q21) [state,  below = of q20] {G};
+\node (q22) [state,  below = of q21] {D};
+\node (q23) [state,  below = of q22] {B};
+\node (q24) [state,  right = of q16,,fill=white] {F};
+\node (q25) [state ,fill=white, below = of q24] {G};
+\node (q26) [state,  below = of q25] {G};
+\node (q27) [state,  below = of q26] {J};
+\node (q28) [state,  below = of q27] {D};
+\node (q29) [state,  below = of q28] {J};
+\node (q30) [state,  below = of q29] {H};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["1"]   (q8);
+\draw(q1) to["2"]   (q9);
+\draw(q2) to["2"]   (q10);
+\draw(q3) to["3"]   (q11);
+\draw(q4) to["4"]   (q12);
+\draw(q5) to["4"]   (q13);
+\draw(q6) to["5"]   (q14);
+\draw(q7) to["6"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["2"]   (q25);
+\draw(q18) to["3"]   (q26);
+\draw(q19) to["3"]   (q27);
+\draw(q20) to["4"]   (q28);
+\draw(q21) to["4"]   (q29);
+\draw(q22) to["5"]   (q30);
+\draw(q23) to["10"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\phantom{a}\\
+\noindent\rule{\textwidth}{0.4pt}
+\phantom{a}\\
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q,fill=blue!20] {C};
+\node (q3) [state,fill=blue!20 , below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,fill=blue!20, below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,fill=blue!20,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2,fill=blue!20] {F};
+\node (q8) [state,  below left = of q2,fill=blue!20] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq,fill=blue!20] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-,red] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-,red] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=white] {A};
+\node (q1) [state,fill=white,  below = of q0] {C};
+\node (q2) [state,fill=white,  below = of q1] {H};
+\node (q3) [state,  below = of q2] {G};
+\node (q4) [state,  below = of q3] {A};
+\node (q5) [state,  below = of q4] {B};
+\node (q6) [state,  below = of q5] {F};
+\node (q7) [state,  below = of q6] {D};
+\node (q8) [state,fill=white,  right = of q0] {D};
+\node (q9) [state,fill=white,  below = of q8] {E};
+\node (q10) [state,fill=white, below = of q9] {J};
+\node (q11) [state,  below = of q10] {I};
+\node (q12) [state,  below = of q11] {B};
+\node (q13) [state,  below = of q12] {C};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8,fill=white] {C};
+\node (q17) [state,fill=white, below = of q16] {E};
+\node (q18) [state,  below = of q17] {F};
+\node (q19) [state,  below = of q18] {I};
+\node (q20) [state,  below = of q19] {B};
+\node (q21) [state,  below = of q20] {G};
+\node (q22) [state,  below = of q21] {D};
+\node (q23) [state,  below = of q22] {B};
+\node (q24) [state,  right = of q16,,fill=white] {F};
+\node (q25) [state ,fill=white, below = of q24] {G};
+\node (q26) [state,  below = of q25] {G};
+\node (q27) [state,  below = of q26] {J};
+\node (q28) [state,  below = of q27] {D};
+\node (q29) [state,  below = of q28] {J};
+\node (q30) [state,  below = of q29] {H};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["1"]   (q8);
+\draw(q1) to["2"]   (q9);
+\draw(q2) to["2"]   (q10);
+\draw(q3) to["3"]   (q11);
+\draw(q4) to["4"]   (q12);
+\draw(q5) to["4"]   (q13);
+\draw(q6) to["5"]   (q14);
+\draw(q7) to["6"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["2"]   (q25);
+\draw(q18) to["3"]   (q26);
+\draw(q19) to["3"]   (q27);
+\draw(q20) to["4"]   (q28);
+\draw(q21) to["4"]   (q29);
+\draw(q22) to["5"]   (q30);
+\draw(q23) to["10"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q,fill=blue!20] {C};
+\node (q3) [state,fill=blue!20 , below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,fill=blue!20, below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,fill=blue!20,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2,fill=blue!20] {F};
+\node (q8) [state,  below left = of q2,fill=blue!20] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq,fill=blue!20] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-,red] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-,red] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=white] {A};
+\node (q1) [state,fill=white,  below = of q0] {C};
+\node (q2) [state,fill=white,  below = of q1] {H};
+\node (q3) [state,  below = of q2] {G};
+\node (q4) [state,  below = of q3] {A};
+\node (q5) [state,  below = of q4] {B};
+\node (q6) [state,  below = of q5] {F};
+\node (q7) [state,  below = of q6] {D};
+\node (q8) [state,fill=white,  right = of q0] {D};
+\node (q9) [state,fill=white,  below = of q8] {E};
+\node (q10) [state,fill=white, below = of q9] {J};
+\node (q11) [state,  below = of q10] {I};
+\node (q12) [state,  below = of q11] {B};
+\node (q13) [state,  below = of q12] {C};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8,fill=white] {C};
+\node (q17) [state,fill=white, below = of q16] {E};
+\node (q18) [state,,fill=white, below = of q17] {F};
+\node (q19) [state,  below = of q18] {I};
+\node (q20) [state,  below = of q19] {B};
+\node (q21) [state,  below = of q20] {G};
+\node (q22) [state,  below = of q21] {D};
+\node (q23) [state,  below = of q22] {B};
+\node (q24) [state,  right = of q16,,fill=white] {F};
+\node (q25) [state ,fill=white, below = of q24] {G};
+\node (q26) [state,fill=white,  below = of q25] {G};
+\node (q27) [state,  below = of q26] {J};
+\node (q28) [state,  below = of q27] {D};
+\node (q29) [state,  below = of q28] {J};
+\node (q30) [state,  below = of q29] {H};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["1"]   (q8);
+\draw(q1) to["2"]   (q9);
+\draw(q2) to["2"]   (q10);
+\draw(q3) to["3"]   (q11);
+\draw(q4) to["4"]   (q12);
+\draw(q5) to["4"]   (q13);
+\draw(q6) to["5"]   (q14);
+\draw(q7) to["6"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["2"]   (q25);
+\draw(q18) to["3"]   (q26);
+\draw(q19) to["3"]   (q27);
+\draw(q20) to["4"]   (q28);
+\draw(q21) to["4"]   (q29);
+\draw(q22) to["5"]   (q30);
+\draw(q23) to["10"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\phantom{a}\\
+\noindent\rule{\textwidth}{0.4pt}
+\phantom{a}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q,fill=blue!20] {C};
+\node (q3) [state,fill=blue!20 , below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,fill=blue!20, below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,fill=blue!20,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2,fill=blue!20] {F};
+\node (q8) [state,  below left = of q2,fill=blue!20] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq,fill=blue!20] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,fill=blue!20, below  = of qqqqq] {I};
+
+\draw[-] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-,red] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-,red] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-,red] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=white] {A};
+\node (q1) [state,fill=white,  below = of q0] {C};
+\node (q2) [state,fill=white,  below = of q1] {H};
+\node (q3) [state,fill=white,  below = of q2] {G};
+\node (q4) [state,  below = of q3] {A};
+\node (q5) [state,  below = of q4] {B};
+\node (q6) [state,  below = of q5] {F};
+\node (q7) [state,  below = of q6] {D};
+\node (q8) [state,fill=white,  right = of q0] {D};
+\node (q9) [state,fill=white,  below = of q8] {E};
+\node (q10) [state,fill=white, below = of q9] {J};
+\node (q11) [state,,fill=white,  below = of q10] {I};
+\node (q12) [state,  below = of q11] {B};
+\node (q13) [state,  below = of q12] {C};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8,fill=white] {C};
+\node (q17) [state,fill=white, below = of q16] {E};
+\node (q18) [state,,fill=white, below = of q17] {F};
+\node (q19) [state,  below = of q18] {I};
+\node (q20) [state,  below = of q19] {B};
+\node (q21) [state,  below = of q20] {G};
+\node (q22) [state,  below = of q21] {D};
+\node (q23) [state,  below = of q22] {B};
+\node (q24) [state,  right = of q16,,fill=white] {F};
+\node (q25) [state ,fill=white, below = of q24] {G};
+\node (q26) [state,fill=white,  below = of q25] {G};
+\node (q27) [state,  below = of q26] {J};
+\node (q28) [state,  below = of q27] {D};
+\node (q29) [state,  below = of q28] {J};
+\node (q30) [state,  below = of q29] {H};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["1"]   (q8);
+\draw(q1) to["2"]   (q9);
+\draw(q2) to["2"]   (q10);
+\draw(q3) to["3"]   (q11);
+\draw(q4) to["4"]   (q12);
+\draw(q5) to["4"]   (q13);
+\draw(q6) to["5"]   (q14);
+\draw(q7) to["6"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["2"]   (q25);
+\draw(q18) to["3"]   (q26);
+\draw(q19) to["3"]   (q27);
+\draw(q20) to["4"]   (q28);
+\draw(q21) to["4"]   (q29);
+\draw(q22) to["5"]   (q30);
+\draw(q23) to["10"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q,fill=blue!20] {C};
+\node (q3) [state,fill=blue!20 , below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,fill=blue!20, below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,fill=blue!20,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2,fill=blue!20] {F};
+\node (q8) [state,  below left = of q2,fill=blue!20] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq,fill=blue!20] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,fill=blue!20, below  = of qqqqq] {I};
+
+\draw[-] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-,red] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-,red] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-,red] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-,red] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=white] {A};
+\node (q1) [state,fill=white,  below = of q0] {C};
+\node (q2) [state,fill=white,  below = of q1] {H};
+\node (q3) [state,fill=white,  below = of q2] {G};
+\node (q4) [state,  below = of q3] {A};
+\node (q5) [state,  below = of q4] {B};
+\node (q6) [state,  below = of q5] {F};
+\node (q7) [state,  below = of q6] {D};
+\node (q8) [state,fill=white,  right = of q0] {D};
+\node (q9) [state,fill=white,  below = of q8] {E};
+\node (q10) [state,fill=white, below = of q9] {J};
+\node (q11) [state,,fill=white,  below = of q10] {I};
+\node (q12) [state,  below = of q11] {B};
+\node (q13) [state,  below = of q12] {C};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8,fill=white] {C};
+\node (q17) [state,fill=white, below = of q16] {E};
+\node (q18) [state,,fill=white, below = of q17] {F};
+\node (q19) [state,fill=white,  below = of q18] {I};
+\node (q20) [state,  below = of q19] {B};
+\node (q21) [state,  below = of q20] {G};
+\node (q22) [state,  below = of q21] {D};
+\node (q23) [state,  below = of q22] {B};
+\node (q24) [state,  right = of q16,,fill=white] {F};
+\node (q25) [state ,fill=white, below = of q24] {G};
+\node (q26) [state,fill=white,  below = of q25] {G};
+\node (q27) [state,fill=white, below = of q26] {J};
+\node (q28) [state,  below = of q27] {D};
+\node (q29) [state,  below = of q28] {J};
+\node (q30) [state,  below = of q29] {H};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["1"]   (q8);
+\draw(q1) to["2"]   (q9);
+\draw(q2) to["2"]   (q10);
+\draw(q3) to["3"]   (q11);
+\draw(q4) to["4"]   (q12);
+\draw(q5) to["4"]   (q13);
+\draw(q6) to["5"]   (q14);
+\draw(q7) to["6"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["2"]   (q25);
+\draw(q18) to["3"]   (q26);
+\draw(q19) to["3"]   (q27);
+\draw(q20) to["4"]   (q28);
+\draw(q21) to["4"]   (q29);
+\draw(q22) to["5"]   (q30);
+\draw(q23) to["10"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\phantom{a}\\
+\noindent\rule{\textwidth}{0.4pt}
+\phantom{a}\\
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,fill=blue!20,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q,fill=blue!20] {C};
+\node (q3) [state,fill=blue!20 , below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,fill=blue!20, below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,fill=blue!20,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2,fill=blue!20] {F};
+\node (q8) [state,  below left = of q2,fill=blue!20] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq,fill=blue!20] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,fill=blue!20, below  = of qqqqq] {I};
+
+\draw[-,red] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-,red] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-,red] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-,red] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-,red] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=white] {A};
+\node (q1) [state,fill=white,  below = of q0] {C};
+\node (q2) [state,fill=white,  below = of q1] {H};
+\node (q3) [state,fill=white,  below = of q2] {G};
+\node (q4) [state,fill=white,  below = of q3] {A};
+\node (q5) [state,  below = of q4] {B};
+\node (q6) [state,  below = of q5] {F};
+\node (q7) [state,  below = of q6] {D};
+\node (q8) [state,fill=white,  right = of q0] {D};
+\node (q9) [state,fill=white,  below = of q8] {E};
+\node (q10) [state,fill=white, below = of q9] {J};
+\node (q11) [state,fill=white,  below = of q10] {I};
+\node (q12) [state,fill=white,  below = of q11] {B};
+\node (q13) [state,  below = of q12] {C};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8,fill=white] {C};
+\node (q17) [state,fill=white, below = of q16] {E};
+\node (q18) [state,,fill=white, below = of q17] {F};
+\node (q19) [state,fill=white,  below = of q18] {I};
+\node (q20) [state,  below = of q19] {B};
+\node (q21) [state,  below = of q20] {G};
+\node (q22) [state,  below = of q21] {D};
+\node (q23) [state,  below = of q22] {B};
+\node (q24) [state,  right = of q16,,fill=white] {F};
+\node (q25) [state ,fill=white, below = of q24] {G};
+\node (q26) [state,fill=white,  below = of q25] {G};
+\node (q27) [state,fill=white, below = of q26] {J};
+\node (q28) [state,  below = of q27] {D};
+\node (q29) [state,  below = of q28] {J};
+\node (q30) [state,  below = of q29] {H};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["1"]   (q8);
+\draw(q1) to["2"]   (q9);
+\draw(q2) to["2"]   (q10);
+\draw(q3) to["3"]   (q11);
+\draw(q4) to["4"]   (q12);
+\draw(q5) to["4"]   (q13);
+\draw(q6) to["5"]   (q14);
+\draw(q7) to["6"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["2"]   (q25);
+\draw(q18) to["3"]   (q26);
+\draw(q19) to["3"]   (q27);
+\draw(q20) to["4"]   (q28);
+\draw(q21) to["4"]   (q29);
+\draw(q22) to["5"]   (q30);
+\draw(q23) to["10"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,fill=blue!20,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q,fill=blue!20] {C};
+\node (q3) [state,fill=blue!20 , below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,fill=blue!20, below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,fill=blue!20,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2,fill=blue!20] {F};
+\node (q8) [state,  below left = of q2,fill=blue!20] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq,fill=blue!20] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,fill=blue!20, below  = of qqqqq] {I};
+
+\draw[-,red] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-,red] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-,red] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-,red] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-,red] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=white] {A};
+\node (q1) [state,fill=white,  below = of q0] {C};
+\node (q2) [state,fill=white,  below = of q1] {H};
+\node (q3) [state,fill=white,  below = of q2] {G};
+\node (q4) [state,fill=white,  below = of q3] {A};
+\node (q5) [state,  below = of q4] {B};
+\node (q6) [state,  below = of q5] {F};
+\node (q7) [state,  below = of q6] {D};
+\node (q8) [state,fill=white,  right = of q0] {D};
+\node (q9) [state,fill=white,  below = of q8] {E};
+\node (q10) [state,fill=white, below = of q9] {J};
+\node (q11) [state,fill=white,  below = of q10] {I};
+\node (q12) [state,fill=white,  below = of q11] {B};
+\node (q13) [state,  below = of q12] {C};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8,fill=white] {C};
+\node (q17) [state,fill=white, below = of q16] {E};
+\node (q18) [state,,fill=white, below = of q17] {F};
+\node (q19) [state,fill=white,  below = of q18] {I};
+\node (q20) [state,fill=white,  below = of q19] {B};
+\node (q21) [state,  below = of q20] {G};
+\node (q22) [state,  below = of q21] {D};
+\node (q23) [state,  below = of q22] {B};
+\node (q24) [state,  right = of q16,,fill=white] {F};
+\node (q25) [state ,fill=white, below = of q24] {G};
+\node (q26) [state,fill=white,  below = of q25] {G};
+\node (q27) [state,fill=white, below = of q26] {J};
+\node (q28) [state,fill=white,  below = of q27] {D};
+\node (q29) [state,  below = of q28] {J};
+\node (q30) [state,  below = of q29] {H};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["1"]   (q8);
+\draw(q1) to["2"]   (q9);
+\draw(q2) to["2"]   (q10);
+\draw(q3) to["3"]   (q11);
+\draw(q4) to["4"]   (q12);
+\draw(q5) to["4"]   (q13);
+\draw(q6) to["5"]   (q14);
+\draw(q7) to["6"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["2"]   (q25);
+\draw(q18) to["3"]   (q26);
+\draw(q19) to["3"]   (q27);
+\draw(q20) to["4"]   (q28);
+\draw(q21) to["4"]   (q29);
+\draw(q22) to["5"]   (q30);
+\draw(q23) to["10"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\phantom{a}\\
+\noindent\rule{\textwidth}{0.4pt}
+\phantom{a}\\
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,fill=blue!20,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q,fill=blue!20] {C};
+\node (q3) [state,fill=blue!20 , below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,fill=blue!20, below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,fill=blue!20,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2,fill=blue!20] {F};
+\node (q8) [state,  below left = of q2,fill=blue!20] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq,fill=blue!20] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,fill=blue!20, below  = of qqqqq] {I};
+
+\draw[-,red] (q0) to["4"] (q1);
+\draw[-,red] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-,red] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-,red] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-,red] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-,red] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill = blue!20,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=white] {A};
+\node (q1) [state,fill=white,  below = of q0] {C};
+\node (q2) [state,fill=white,  below = of q1] {H};
+\node (q3) [state,fill=white,  below = of q2] {G};
+\node (q4) [state,fill=white,  below = of q3] {A};
+\node (q5) [state,fill=white,  below = of q4] {B};
+\node (q6) [state,  below = of q5] {F};
+\node (q7) [state,  below = of q6] {D};
+\node (q8) [state,fill=white,  right = of q0] {D};
+\node (q9) [state,fill=white,  below = of q8] {E};
+\node (q10) [state,fill=white, below = of q9] {J};
+\node (q11) [state,fill=white,  below = of q10] {I};
+\node (q12) [state,fill=white,  below = of q11] {B};
+\node (q13) [state,fill=white,  below = of q12] {C};
+\node (q14) [state,  below = of q13] {I};
+\node (q15) [state,  below = of q14] {J};
+\node (q16) [state,  right = of q8,fill=white] {C};
+\node (q17) [state,fill=white, below = of q16] {E};
+\node (q18) [state,,fill=white, below = of q17] {F};
+\node (q19) [state,fill=white,  below = of q18] {I};
+\node (q20) [state,fill=white,  below = of q19] {B};
+\node (q21) [state,  below = of q20] {G};
+\node (q22) [state,  below = of q21] {D};
+\node (q23) [state,  below = of q22] {B};
+\node (q24) [state,  right = of q16,,fill=white] {F};
+\node (q25) [state ,fill=white, below = of q24] {G};
+\node (q26) [state,fill=white,  below = of q25] {G};
+\node (q27) [state,fill=white, below = of q26] {J};
+\node (q28) [state,fill=white,  below = of q27] {D};
+\node (q29) [state,  below = of q28] {J};
+\node (q30) [state,  below = of q29] {H};
+\node (q31) [state,  below = of q30] {J};
+
+(q0)  (q1);
+\draw[-](q0) to["1"]   (q8);
+\draw(q1) to["2"]   (q9);
+\draw(q2) to["2"]   (q10);
+\draw(q3) to["3"]   (q11);
+\draw(q4) to["4"]   (q12);
+\draw(q5) to["4"]   (q13);
+\draw(q6) to["5"]   (q14);
+\draw(q7) to["6"]   (q15);
+\draw(q16) to["1"]   (q24);
+\draw(q17) to["2"]   (q25);
+\draw(q18) to["3"]   (q26);
+\draw(q19) to["3"]   (q27);
+\draw(q20) to["4"]   (q28);
+\draw(q21) to["4"]   (q29);
+\draw(q22) to["5"]   (q30);
+\draw(q23) to["10"]   (q31);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+We can stop since we have n-1 edges.
+\section{Prim's Algorithm}
+The steps are:
+\begin{itemize}
+    \item Initialize new graph with one (arbitrary) node from the old graph.
+    \item While new graph has fewer than n nodes:
+\begin{enumerate}
+    \item Find the node from the old graph with the smallest connecting edge to
+the new graph
+    \item Add it to the new graph
+\end{enumerate}
+\end{itemize}
+Every step will have joined one node, so that at the end we will have one graph
+with all n nodes and it will be a minimum spanning tree of the original graph.\\
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q] {C};
+\node (q3) [state,  below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2] {F};
+\node (q8) [state,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-] (q2) to["2"] (q8);
+\draw[-] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q] {C};
+\node (q3) [state,fill=blue!20,  below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2] {F};
+\node (q8) [state,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-] (q2) to["2"] (q8);
+\draw[-] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,fill=blue!20,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,  right = of q] {C};
+\node (q3) [state,fill=blue!20,  below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2] {F};
+\node (q8) [state,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-,red] (q0) to["4"] (q1);
+\draw[-] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-] (q2) to["2"] (q8);
+\draw[-] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,fill=blue!20,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,fill=blue!20,  right = of q] {C};
+\node (q3) [state,fill=blue!20,  below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,  below right = of q2] {F};
+\node (q8) [state,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-,red] (q0) to["4"] (q1);
+\draw[-,red] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-] (q2) to["2"] (q8);
+\draw[-] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,fill=blue!20,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,fill=blue!20,  right = of q] {C};
+\node (q3) [state,fill=blue!20,  below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,fill=blue!20,  below right = of q2] {F};
+\node (q8) [state,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-,red] (q0) to["4"] (q1);
+\draw[-,red] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,fill=blue!20,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,fill=blue!20,  right = of q] {C};
+\node (q3) [state,fill=blue!20,  below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,fill=blue!20,  below right = of q2] {F};
+\node (q8) [state,fill=blue!20,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,  below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-,red] (q0) to["4"] (q1);
+\draw[-,red] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,fill=blue!20,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,fill=blue!20,  right = of q] {C};
+\node (q3) [state,fill=blue!20,  below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,fill=blue!20,  below right = of q2] {F};
+\node (q8) [state,fill=blue!20,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,fill=blue!20, below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,  below  = of qqqqq] {I};
+
+\draw[-,red] (q0) to["4"] (q1);
+\draw[-,red] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-,red] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,fill=blue!20,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,fill=blue!20,  right = of q] {C};
+\node (q3) [state,fill=blue!20,  below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,  right = of qqqq] {J};
+\node (q7) [state,fill=blue!20,  below right = of q2] {F};
+\node (q8) [state,fill=blue!20,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,fill=blue!20, below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,fill=blue!20,  below  = of qqqqq] {I};
+
+\draw[-,red] (q0) to["4"] (q1);
+\draw[-,red] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-,red] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-,red] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,fill=blue!20,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,fill=blue!20,  right = of q] {C};
+\node (q3) [state,fill=blue!20,  below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,  below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,fill=blue!20,  right = of qqqq] {J};
+\node (q7) [state,fill=blue!20,  below right = of q2] {F};
+\node (q8) [state,fill=blue!20,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,fill=blue!20, below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,fill=blue!20,  below  = of qqqqq] {I};
+
+\draw[-,red] (q0) to["4"] (q1);
+\draw[-,red] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-,red] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-,red] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-,red] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 1.3cm, on grid, auto,every state/.style = {draw = black, fill =white,minimum size=0.5cm}]
+ 
+\node (q0) [state,fill=blue!20] {A};
+\node (qqq) [state, draw=white, right = of q0] {};
+\node (q1) [state,fill=blue!20,  right = of qqq] {B};
+\node (q) [state, draw=white, right = of q1] {};
+\node (q2) [state,fill=blue!20,  right = of q] {C};
+\node (q3) [state,fill=blue!20,  below = of q0] {D};
+\node (q4) [state, draw=white, below = of q3] {};
+\node (q5) [state,fill=blue!20,   below = of q4] {H};
+\node (qqqq) [state, draw=white, right = of q5] {};
+\node (q6) [state,fill=blue!20,  right = of qqqq] {J};
+\node (q7) [state,fill=blue!20,  below right = of q2] {F};
+\node (q8) [state,fill=blue!20,  below left = of q2] {E};
+\node (qq) [state,draw=white, minimum size=0.01cm,  between= q7 and q8 ] {};
+\node (q10) [state,fill=blue!20, below  = of qq] {G};
+\node (qqqqq) [state,  below  = of q10,draw=white] {};
+\node (q11) [state,fill=blue!20,  below  = of qqqqq] {I};
+
+\draw[-,red] (q0) to["4"] (q1);
+\draw[-,red] (q1) to["4"] (q2);
+\draw[-,red] (q0) to["1"] (q3);
+\draw[-] (q1) to["4"] (q3);
+\draw[-] (q3) to["5"] (q5);
+\draw[-] (q3) to["6"] (q6);
+\draw[-,red] (q5) to["2"] (q6);
+\draw[-,red] (q2) to["2"] (q8);
+\draw[-,red] (q2) to["1"] (q7);
+\draw[-] (q7) to["3"] (q10);
+\draw[-,red] (q8) to["2"] (q10);
+\draw[-] (q10) to["4"] (q6);
+\draw[-,red] (q10) to["3"] (q11);
+\draw[-] (q1) to["10"] (q6);
+\draw[-,red] (q6) to["3"] (q11);
+\draw[-,bend left] (q7) to["5"] (q11);
+    
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\section{Max flow}
+Given a network directed from a source vertex to a
+target vertex with a maximum capacity on each arc,
+determine the highest value of a flow from the source to
+the target which respects the capacities and is preserved
+at each intermediate vertex.
+\begin{center}
+    \begin{tikzpicture} [node distance = 2cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.5cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  below right  = of q1] {$t$};
+
+
+\draw[-] (q0) to["1"] (q1);
+\draw[-] (q0) to["11"] (q2);
+\draw[-] (q2) to["2"] (q3);
+\draw[-] (q1) to["9"] (q3);
+\end{tikzpicture}
+\end{center}
+\newpage
+\section{Method of Ford \& Fulkerson}
+\begin{enumerate}
+    \item Start with a flow of zero.
+    \item At each iteration consider the residual graph composed of \begin{itemize}
+        \item[$\circ$] the original arcs with capacity = original capacity - the flow on the arc.\\ This is called the \underline{residual capacity}. \\
+        $\rightsquigarrow$if this value is zero, the arc is eliminated.
+        \item[$\circ$] Arcs opposite to the original ones with capacity equal to the flow passing on the corresponding arc \\
+        $\rightsquigarrow$if this value is zero, the arc is eliminated.
+    \end{itemize}
+
+\end{enumerate}
+Try to find a path from source to target on the residual graph
+and update the flow with the minimum capacity along the
+path (increase flow for original arcs, decrease for opposite
+arcs).\\ Update the residual graph.\\
+construct the re a path not exist, we’re done: the flow is maximal. \\
+\begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  right  = of q1] {};
+\node (q4) [state,  right  = of q2] {};
+\node (q5) [state,  below right  = of q3] {};
+
+\draw[->] (q0) -- node[midway,left] {10} (q1) ;
+\draw[->] (q0) -- node[midway,left] {10} (q2) ;
+\draw[->] (q1) -- node[midway,above] {4} (q3) ;
+\draw[->] (q2) -- node[midway,below] {9} (q4) ;
+\draw[->] (q1) -- node[midway,left] {2} (q2) ;
+\draw[->] (q4) -- node[midway,right] {6} (q3) ;
+\draw[->] (q3) -- node[midway,right] {10} (q5) ;
+\draw[->] (q4) -- node[midway,right] {10} (q5) ;
+\draw[->] (q1) -- node[midway,right] {8} (q4) ;
+
+
+\end{tikzpicture}
+\end{center}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  right  = of q1] {};
+\node (q4) [state,  right  = of q2] {};
+\node (q5) [state,  below right  = of q3] {};
+
+\draw[->] (q0) -- node[midway,left] {0/10} (q1) ;
+\draw[->] (q0) -- node[midway,left] {0/10} (q2) ;
+\draw[->] (q1) -- node[midway,above] {0/4} (q3) ;
+\draw[->] (q2) -- node[midway,below] {0/9} (q4) ;
+\draw[->] (q1) -- node[midway,left] {0/2} (q2) ;
+\draw[->] (q4) -- node[midway,right] {0/6} (q3) ;
+\draw[->] (q3) -- node[midway,right] {0/10} (q5) ;
+\draw[->] (q4) -- node[midway,right] {0/10} (q5) ;
+\draw[->] (q1) -- node[midway,right] {0/8} (q4) ;
+
+
+\end{tikzpicture}
+\end{center}
+Start with a flow of zero.\\
+\phantom{a}\\
+\phantom{a}\\
+\phantom{a}\\
+\phantom{a}\\
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  right  = of q1] {};
+\node (q4) [state,  right  = of q2] {};
+\node (q5) [state,  below right  = of q3] {};
+
+\draw[->,blue] (q0) -- node[midway,left] {10} (q1) ;
+\draw[->] (q0) -- node[midway,left] {10} (q2) ;
+\draw[->] (q1) -- node[midway,above] {4} (q3) ;
+\draw[->] (q2) -- node[midway,below] {9} (q4) ;
+\draw[->] (q1) -- node[midway,left] {2} (q2) ;
+\draw[->] (q4) -- node[midway,right] {6} (q3) ;
+\draw[->] (q3) -- node[midway,right] {10} (q5) ;
+\draw[->,blue] (q4) -- node[midway,right] {10} (q5) ;
+\draw[->,blue] (q1) -- node[midway,right] {8} (q4) ;
+
+
+\end{tikzpicture}
+\end{center}
+Construct the residual graph as follow:\\
+-Keep the same edges\\
+-Capacity of edges is actual capacity - flow\\
+-Backward arrow if we have flow\\
+Select a path from s to t.\\
+Therefore the residual capacity is 8.
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  right  = of q1] {};
+\node (q4) [state,  right  = of q2] {};
+\node (q5) [state,  below right  = of q3] {};
+
+\draw[->] (q0) -- node[midway,left] {8/10} (q1) ;
+\draw[->] (q0) -- node[midway,left] {0/10} (q2) ;
+\draw[->] (q1) -- node[midway,above] {0/4} (q3) ;
+\draw[->] (q2) -- node[midway,below] {0/9} (q4) ;
+\draw[->] (q1) -- node[midway,left] {0/2} (q2) ;
+\draw[->] (q4) -- node[midway,right] {0/6} (q3) ;
+\draw[->] (q3) -- node[midway,right] {0/10} (q5) ;
+\draw[->] (q4) -- node[midway,right] {8/10} (q5) ;
+\draw[->] (q1) -- node[midway,right] {8/8} (q4) ;
+
+
+\end{tikzpicture}
+\end{center}
+Add the residual capacity to the flow.\\
+\phantom{a}\\
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  right  = of q1] {};
+\node (q4) [state,  right  = of q2] {};
+\node (q5) [state,  below right  = of q3] {};
+
+\draw [->,blue] (q0) to[bend left=15] node[midway]{2} (q1);
+\draw [->] (q1) to[bend left=15] node[midway]{8} (q0);
+\draw[->] (q0) -- node[midway,left] {10} (q2) ;
+\draw[->] (q1) -- node[midway,above] {4} (q3) ;
+\draw[->,blue] (q2) -- node[midway,below] {9} (q4) ;
+\draw[->,blue] (q1) -- node[midway,left] {2} (q2) ;
+\draw[->] (q4) -- node[midway,right] {6} (q3) ;
+\draw[->] (q3) -- node[midway,right] {10} (q5) ;
+\draw [->,blue] (q4) to[bend left=15] node[midway]{2} (q5);
+\draw [->] (q5) to[bend left=15] node[midway]{8} (q4);
+\draw[->] (q4) -- node[midway,right] {8} (q1) ;
+
+\end{tikzpicture}
+\end{center}
+Construct the residual graph and select a path.Therefore the residual capacity is 2.
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  right  = of q1] {};
+\node (q4) [state,  right  = of q2] {};
+\node (q5) [state,  below right  = of q3] {};
+
+\draw[->] (q0) -- node[midway,left] {10/10} (q1) ;
+\draw[->] (q0) -- node[midway,left] {0/10} (q2) ;
+\draw[->] (q1) -- node[midway,above] {0/4} (q3) ;
+\draw[->] (q2) -- node[midway,below] {2/9} (q4) ;
+\draw[->] (q1) -- node[midway,left] {2/2} (q2) ;
+\draw[->] (q4) -- node[midway,right] {0/6} (q3) ;
+\draw[->] (q3) -- node[midway,right] {0/10} (q5) ;
+\draw[->] (q4) -- node[midway,right] {10/10} (q5) ;
+\draw[->] (q1) -- node[midway,right] {8/8} (q4) ;
+
+
+\end{tikzpicture}
+\end{center}
+Add the residual capacity to the flow.\\
+\phantom{a}\\
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  right  = of q1] {};
+\node (q4) [state,  right  = of q2] {};
+\node (q5) [state,  below right  = of q3] {};
+
+\draw [->] (q1) -- node[midway]{10} (q0);
+\draw[->,blue] (q0) -- node[midway,left] {10} (q2) ;
+\draw[->] (q1) -- node[midway,above] {4} (q3) ;
+\draw[->,blue] (q2) to[bend left=15] node[midway,below] {7} (q4) ;
+\draw[->] (q4) to[bend left] node[midway,below] {2} (q2) ;
+\draw[->] (q2) -- node[midway,left] {2} (q1) ;
+\draw[->,blue] (q4) -- node[midway,right] {6} (q3) ;
+\draw[->,blue] (q3) -- node[midway,right] {10} (q5) ;
+\draw [->] (q5) -- node[midway]{10} (q4);
+\draw[->] (q4) -- node[midway,right] {8} (q1) ;
+
+\end{tikzpicture}
+\end{center}
+Construct the residual graph and select a path.\\
+Therefore the residual capacity is 6.
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  right  = of q1] {};
+\node (q4) [state,  right  = of q2] {};
+\node (q5) [state,  below right  = of q3] {};
+
+\draw[->] (q0) -- node[midway,left] {10/10} (q1) ;
+\draw[->] (q0) -- node[midway,left] {6/10} (q2) ;
+\draw[->] (q1) -- node[midway,above] {0/4} (q3) ;
+\draw[->] (q2) -- node[midway,below] {8/9} (q4) ;
+\draw[->] (q1) -- node[midway,left] {2/2} (q2) ;
+\draw[->] (q4) -- node[midway,right] {6/6} (q3) ;
+\draw[->] (q3) -- node[midway,right] {6/10} (q5) ;
+\draw[->] (q4) -- node[midway,right] {10/10} (q5) ;
+\draw[->] (q1) -- node[midway,right] {8/8} (q4) ;
+
+
+\end{tikzpicture}
+\end{center}
+
+Add the residual capacity to the flow.\\
+\phantom{a}\\
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  right  = of q1] {};
+\node (q4) [state,  right  = of q2] {};
+\node (q5) [state,  below right  = of q3] {};
+
+\draw [->] (q1) -- node[midway]{10} (q0);
+\draw[->,blue] (q0) to[bend left =15] node[midway,right] {4} (q2) ;
+\draw[->] (q2) to[bend left =15] node[midway,left] {6} (q0) ;
+\draw[->,blue] (q1) -- node[midway,above] {4} (q3) ;
+\draw[->] (q2) to[bend left=15] node[midway,below] {1} (q4) ;
+\draw[->] (q4) to[bend left] node[midway,below] {8} (q2) ;
+\draw[->,blue] (q2) -- node[midway,left] {2} (q1) ;
+\draw[->] (q3) -- node[midway,right] {6} (q4) ;
+\draw[->] (q5) -- node[midway,right] {10} (q4) ;
+\draw [->,blue] (q3)  to[bend left=15]node[midway]{4} (q5);
+\draw [->] (q5) to[bend left=15] node[midway]{6} (q3);
+\draw[->] (q4) -- node[midway,right] {8} (q1) ;
+
+\end{tikzpicture}
+\end{center}
+Construct the residual graph and select a path.
+Therefore the residual capacity is 2.
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  right  = of q1] {};
+\node (q4) [state,  right  = of q2] {};
+\node (q5) [state,  below right  = of q3] {};
+
+\draw[->] (q0) -- node[midway,left] {10/10} (q1) ;
+\draw[->] (q0) -- node[midway,left] {8/10} (q2) ;
+\draw[->] (q1) -- node[midway,above] {2/4} (q3) ;
+\draw[->] (q2) -- node[midway,below] {8/9} (q4) ;
+\draw[->] (q1) -- node[midway,left] {0/2} (q2) ;
+\draw[->] (q4) -- node[midway,right] {6/6} (q3) ;
+\draw[->] (q3) -- node[midway,right] {8/10} (q5) ;
+\draw[->] (q4) -- node[midway,right] {10/10} (q5) ;
+\draw[->] (q1) -- node[midway,right] {8/8} (q4) ;
+
+
+\end{tikzpicture}
+\end{center}
+
+Add the residual capacity to the flow.\\
+\phantom{a}\\
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  right  = of q1] {};
+\node (q4) [state,  right  = of q2] {};
+\node (q5) [state,  below right  = of q3] {};
+
+\draw[->] (q1) -- node[midway,left] {10} (q0) ;
+\draw[->,blue] (q0) to[bend left=15] node[midway,left] {2} (q2) ;
+\draw[->] (q2) to[bend left=15] node[midway,left] {8} (q0) ;
+\draw[->] (q3) to[bend left=15] node[midway,above] {2} (q1) ;
+\draw[->,blue] (q1) to[bend left=15] node[midway,above] {2} (q3) ;
+\draw[->,blue] (q2) to[bend left=15] node[midway,below] {1} (q4) ;
+\draw[->] (q4) to[bend left=15] node[midway,below] {8} (q2);
+\draw[->] (q1) -- node[midway,left] {2} (q2) ;
+\draw[->] (q3) -- node[midway,right] {6} (q4) ;
+\draw[->,blue] (q3) -- node[midway,right] {2} (q5) ;
+\draw[->] (q5) to[bend left=15] node[midway,left] {8} (q3) ;
+\draw[->] (q5) to[bend left=15] node[midway,left] {10} (q4) ;
+\draw[->,blue] (q4) -- node[midway,right] {8} (q1) ;
+
+
+\end{tikzpicture}
+\end{center}
+
+Therefore the residual capacity is 1.\\
+\phantom{a}\\
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,  above right = of q0] {$2$};
+\node (q2) [state,  below right  = of q0] {$3$};
+\node (q3) [state,  right  = of q1] {$4$};
+\node (q4) [state,  right  = of q2] {$5$};
+\node (q5) [state,  below right  = of q3] {t};
+
+\draw[->] (q0) -- node[midway,left] {10/10} (q1) ;
+\draw[->] (q0) -- node[midway,left] {9/10} (q2) ;
+\draw[->] (q1) -- node[midway,above] {3/4} (q3) ;
+\draw[->] (q2) -- node[midway,below] {9/9} (q4) ;
+\draw[->] (q1) -- node[midway,left] {0/2} (q2) ;
+\draw[->] (q4) -- node[midway,right] {6/6} (q3) ;
+\draw[->] (q3) -- node[midway,right] {9/10} (q5) ;
+\draw[->] (q4) -- node[midway,right] {10/10} (q5) ;
+\draw[->] (q1) -- node[midway,right] {7/8} (q4) ;
+\draw [green,rotate=-50,fill=green!20,dashed,opacity=0.6] (1.5,0.5) ellipse (2cm and 1.5cm);
+
+
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  right  = of q1] {};
+\node (q4) [state,  right  = of q2] {};
+\node (q5) [state,  below right  = of q3] {};
+
+
+\draw[->] (q1) -- node[midway,left] {10} (q0) ;
+\draw[->] (q2) to[bend left=15] node[midway,left] {9} (q0) ;
+\draw[->] (q0) to[bend left=15] node[midway,left] {1} (q2) ;
+\draw[->] (q1) to[bend left=15] node[midway,above] {1} (q3) ;
+\draw[->] (q3) to[bend left=15] node[midway,above] {3} (q1) ;
+\draw[->] (q4) -- node[midway,below] {9} (q2) ;
+\draw[->] (q1) -- node[midway,left] {2} (q2) ;
+\draw[->] (q3) -- node[midway,right] {6} (q4) ;
+\draw[->] (q3) to[bend left=15] node[midway,right] {1} (q5) ;
+\draw[->] (q5) to[bend left=15] node[midway,right] {9} (q3) ;
+\draw[->] (q5) -- node[midway,right] {10} (q4) ;
+\draw[->] (q1) to[bend left=15] node[midway,right] {1} (q4) ;
+\draw[->] (q4) to[bend left=15] node[midway,right] {7} (q1) ;
+\draw[dashed,green,thick] (q4) (0.5,1) -- (4,-3) ;
+
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+The max flow is $1+2+6+2+8=19$.\\ \\
+Decide or not if there is no more path available it's not a good condition for a computer.We need to introduce an another condition.
+
+\begin{voc}
+A \textbf{\textcolor{blue}{cut}} corresponds to a set of edges (arcs) whose removal leaves a graph disconnected.\\ \\
+Sometimes a cut is denoted by a partitioning of the nodes:\\
+Example above: {s,3} and {2,4,5,t}.\\ \\
+An \textbf{\textcolor{blue}{s-t cut}} is a division of the nodes into two parts, with the source in one part
+and the target in the other.\\  \\
+The \textbf{\textcolor{blue}{value of a cut}} is defined as the combined capacity of the outgoing arcs.\\
+For instance, the green cut has a value/capacity of 10+9.\\
+The \textbf{\textcolor{blue}{minimum cut}}is among all cuts the one with the smallest value.
+\end{voc}
+\begin{thm}
+    \begin{center}
+        Min cut = Max flow  and FF algorithm finds them.
+    \end{center}
+\end{thm}
+\begin{proof}
+    Clearly Min cut $\ge $Max flow since any flow that we push from s to t has to go through the green area.\\
+Claim: when FF algorithm terminates, it gives a cut C and a flow F for which value(C) $=$ value(F).\\
+It follows min cut $\leq$ value(C) $=$ value(F) $\leq$ max flow.
+\end{proof}
+
+\begin{voc}
+    By Edmonds-Karp-Dinitz,
+    Apply the FF algorithm but always choose the path with the
+    minimum number of edges allows to terminate in O(mn).
+\end{voc}
+\section{Min cost flow}
+Given the network with costs and capacities and a flow value v, we need
+to find an $s-t$ flow of value $v$ of minimum cost.\\ \\
+Algorithm:
+\begin{enumerate}
+    \item Find a feasible flow of value v (for example by FF). Construct residual graph (negative of the cost for reverse arcs)
+    \item While there is a negative-cost cycle in residual graph:
+\begin{itemize}
+    \item [$\circ$]Add flow over the cycle.
+    \item [$\circ$]Update the residual graph.
+\end{itemize}
+\end{enumerate}
+\begin{voc}
+    A flow is a minimum cost flow (of given value v) $\Longleftrightarrow$ Residual graph has no negative-cost cycles.
+\end{voc}
+Example: Find a min cost flow of value 2.\\
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2.9cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  above right = of q0] {};
+\node (q2) [state,  below right  = of q0] {};
+\node (q3) [state,  between  = q1 and q2,draw=white] {};
+\node (q4) [state,  right  = of q3] {};
+
+\draw [->] (q1)-- node[midway,above left ]{-4,2} (q0);
+\draw [->] (q0) -- node[midway,below]{1,2} (q2);
+\draw [->] (q1) to[bend left] node[midway]{2,1} (q2);
+\draw[->] (q2) to[bend left] node[midway,left] {3,1} (q1) ;
+\draw[->] (q4) -- node[midway,above] {-5,2} (q1) ;
+\draw[->] (q2) -- node[midway,below] {2,1} (q4);
+
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\chapter{Exercises}
+\section{Tutorial 1: Basics of Graph Theory}
+
+
+\begin{voc}{}{}\leavevmode
+\begin{enumerate}
+    \item A \textbf{\textcolor{blue}{graph}} $G$ is defined by a pair $(V, E)$ where:
+    \begin{itemize}
+        \item  $V$ is a finite set of points 
+        \item $E$ is a set of pairs of two distinct points. 
+    \end{itemize}
+    A graph is drawn by depicting the
+points in $V$ as dots and the pairs in $E$ as lines between two points.
+    \item The points defining a graph are called \textbf{\textcolor{blue}{vertices}} and the lines are called \textbf{\textcolor{blue}{edges}}.\\
+     $\rightsquigarrow$ The number of vertices is denoted by $\lvert V \rvert = n$ and the number of
+edges by $\lvert E \rvert = m$.
+    \item  A \textbf{graph} is called \textbf{\textcolor{blue}{simple}} if there is at most one edge between every pair of points.
+    \item If for two vertices $u, v \in V$ we have the edge $e = \{u, v\} \in E$ then we say that $u$ and $v$ are \textbf{\textcolor{blue}{adjacent}} or u and v are incident to e / e is incident to u and v.\\ Two edges that share a vertex are
+also said to be adjacent.
+    \item The number of edges incident to vertex $v \in V$ is called the \textbf{\textcolor{blue}{degree}} of $v$ and denoted by $d(v)$. 
+    \item A \textbf{graph} is called \textbf{\textcolor{blue}{regular}} if all vertices have the same degree.
+    \item A \textbf{graph} is called \textbf{\textcolor{blue}{k-regular}} if all vertices have degree k.
+\end{enumerate}
+
+\end{voc}
+\begin{exo}[\hypertarget{exo17}{\hyperlink{so17}{1.7}}$\phantom{a}$]
+ How many 2-regular graphs exist with 5 vertices?
+\end{exo}
+\begin{exo}[\hypertarget{exo18}{\hyperlink{so18}{1.8}}$\phantom{1}$]
+How many 3-regular graphs exist with 5 vertices?
+\end{exo}
+\begin{exo}[\hypertarget{exo111}{\hyperlink{so111}{1.11}}]
+How many edges has a 5-regular graph on 16 vertices?
+\end{exo}
+\begin{exo}[\hypertarget{exo112}{\hyperlink{so112}{1.12}}]
+How many edges has a k-regular graph on n vertices?
+\end{exo}
+\begin{exo}[\hypertarget{exo116}{\hyperlink{so116}{1.16}}]
+Prove that every graph has an even number of points with
+odd degree.
+\end{exo}
+\begin{exo}[\hypertarget{exo119}{\hyperlink{so119}{1.19}}]
+Prove that a graph $G = (V, E)$ with $\lvert V \rvert = n$ and $\lvert E \rvert = m$ 
+has a vertex with degree $\leq \frac{2m}{n}$ and a vertex with degree $\geq \frac{2m}{n}$ .
+\end{exo}
+\begin{exo}[\hypertarget{exo121}{\hyperlink{so121}{1.21}}]
+Prove that every graph $G = (V, E)$ with $\lvert V \rvert \geq 2$ has two vertices of the same degree.
+\end{exo}
+\newpage
+\begin{voc}{}{}\leavevmode
+\begin{enumerate}
+    \item A \textbf{graph} $G = (V, E)$ is \textbf{\textcolor{blue}{complete}} if each pair of points is adjacent. A complete graph on n points is denoted by $K_n$.\\
+    \begin{center}
+    \includegraphics[width=0.75\textwidth]{1.png}
+    \end{center}
+    
+    \item A \textbf{graph} $G$ is \textbf{\textcolor{blue}{bipartite}} if $V$ can be split into two sets $V_1$ and $V_2$ such that for each edge $e = \{u, v\} \in E$, we have $\lvert e\cap V_1 \rvert  = \lvert e\cap V_2 \rvert = 1$. 
+    \begin{center}
+    \includegraphics[width=0.25\textwidth]{Simple-bipartite-graph.png}
+    \end{center}
+    Informally, bipartite means that there are only arrows going across $V_1$ and $V_2$.
+    \item A  \textbf{\textcolor{blue}{complete bipartite graph}} with $V = V_1 \cup V_2$ has edge set \[E = \{\phantom{a}\{v_1, v_2\}\phantom{a}|\phantom{a} v_1 \in V_1, v_2 \in V_2\}\]
+    \begin{center}
+        \includegraphics[width=0.20\textwidth]{bipartitecomplet.png}
+    \end{center}
+The complete bipartite graph with  $\lvert  V_1 \rvert = m 
+$ and $\lvert  V_2 \rvert = n $ is denoted by
+$K_{m,n}$
+\end{enumerate}
+
+\end{voc}
+
+\begin{exo}[\hypertarget{exo126}{\hyperlink{so126}{1.26}}] For which values of $m$ and $n$ is $K_{m,n}$ regular?
+\end{exo}
+\begin{voc}{}{}\leavevmode
+\begin{enumerate}
+    \item A  \textbf{\textcolor{blue}{walk}} in a graph $G = (V, E)$ is a sequence of vertices $(v_0, v_1, \dots , v_k)$ such
+that  $\{v_{i-1}, v_i\} \in E,\phantom{a}$ for  $1 \leq i \leq  k $. It is called a walk is from $v_0$ to $v_k$.
+We say that this walk has (combinatorial) length k. 
+\item If all vertices on the walk are distinct we call it a \textbf{\textcolor{blue}{path}}.
+\end{enumerate}
+\end{voc}
+\begin{exo}[\hypertarget{exo141}{\hyperlink{so141}{1.41}}] How many paths are there from vertex 1 to vertex 3 in $K_3$?
+\end{exo}
+\begin{exo}[\hypertarget{exo142}{\hyperlink{so142}{1.42}}] How many paths are there from vertex 1 to vertex n in $K_n$?
+\end{exo}
+\begin{exo}[\hypertarget{exo143}{\hyperlink{so143}{1.43}}]  Prove that that a graph of which each vertex has degree at least k, has a path of length k.
+\end{exo}
+\begin{voc}{}{}\leavevmode
+\begin{enumerate}
+    \item A \textbf{graph} is called \textbf{\textcolor{blue}{connected}} if there is a path between any two of its vertices.\\
+    \begin{center}
+        \includegraphics[width=0.45\textwidth]{Sample-graph-removebg-preview.png}
+    \end{center}
+    This graph becomes disconnected when the dashed edge is removed.
+    \end{enumerate}
+\end{voc}
+\begin{exo}[\hypertarget{exo147}{\hyperlink{so147}{1.47}}]  Prove that every connected graph on n vertices contains at least$ n - 1$ edges.
+
+\end{exo}
+\begin{exo}[\hypertarget{exo148}{\hyperlink{so148}{1.48}}]  Does there exist a non-connected graph on 6 vertices containing 11 edges?
+\end{exo}
+\begin{exo}[\hypertarget{exo150}{\hyperlink{so150}{1.50}}] Prove that every non-connected graph on n vertices contains at most $\frac{1}{2}(n - 1)(n - 2)$ edges.
+\end{exo}
+\begin{voc}{}{}\leavevmode
+\begin{enumerate}
+    \item A \textbf{graph}  $G' = (V', E')$ is called a \textbf{\textcolor{blue}{subgraph}} of $G = (V, E)$ if $V' \subseteq V$ and
+$E' \subseteq E$. 
+    \item A \textbf{\textcolor{blue}{component}} of $G = (V, E)$ is a maximal connected subgraph $G' = (V', E')$. That means, it is a connected subgraph and there is no other
+connected subgraph $G'' = (V'', E'')$ with $V' \subseteq V''$ and $E' \subseteq E''$.\\
+Hence, a graph $G$ is connected if and only if it consists of exactly one component.
+    \end{enumerate}
+\end{voc}
+
+\newpage
+\begin{exo}[\hypertarget{exo159}{\hyperlink{so159}{1.59}}] 
+ Prove that if $ G1 = (V_1, E_1)$ and
+$G_2 = (V_2, E_2)$ are two distinct components of $G$ then $V_1 \cap V_2 = \emptyset$.
+\end{exo}
+\begin{exo}[\hypertarget{exo163}{\hyperlink{so163}{1.63}}] 
+Prove that a graph $G = (V, E)$ with each vertex having
+degree at least $\frac{1}{2}(n - 1)$ is connected.
+\end{exo}
+\begin{voc}{}{}\leavevmode
+\begin{enumerate}
+    \item A \textbf{walk} $(v_0, v_1, \dots , v_k)$ is called a closed walk or a \textbf{\textcolor{blue}{circle}} if $v_0 = v_k$. \item A cycle with all vertices distinct is called a \textbf{\textcolor{blue}{circuit}}. 
+    \item A circuit of length 3 is called a \textbf{triangle}
+\end{enumerate}
+\end{voc}
+
+\begin{exo}[\hypertarget{exo167}{\hyperlink{so167}{1.67}}] 
+Let $G$ be a graph for which every vertex has a degree of at
+least 2. Prove that $G$ contains a circuit.
+\end{exo} 
+\begin{voc}{}{}\leavevmode
+\begin{enumerate}
+    \item $G = (V, E)$ is called a \textbf{\textcolor{blue}{forest}} if G does not contain any circuit. 
+    \item A connected forest is called a \textbf{\textcolor{blue}{tree}}.
+\end{enumerate}
+\begin{center}
+    \includegraphics[width=0.25\textwidth]{270px-Tree_graph.svg-removebg-preview.png}
+    \end{center}
+\end{voc}
+
+\begin{exo}[\hypertarget{exo175}{\hyperlink{so175}{1.75}}] 
+Prove that between any pair of vertices in a tree there is
+exactly one path.
+\end{exo}
+\begin{voc}{}{}\leavevmode
+\begin{enumerate}
+    \item A vertex of degree 1 in a tree is called a \textbf{\textcolor{blue}{leaf}} of the tree.
+\end{enumerate}
+\end{voc}
+
+\begin{exo}[\hypertarget{exo176}{\hyperlink{so176}{1.76}}] 
+Prove that every tree with at least two vertices contains a leaf.
+\end{exo}
+\begin{exo}[\hypertarget{exo177}{\hyperlink{so177}{1.77}}] 
+Derive from the previous exercise that every tree on n vertices has exactly $n - 1$ edges.
+\end{exo}
+
+\begin{exo}[\hypertarget{exo180}{\hyperlink{so180}{1.80}}] 
+Prove that every tree with at least two vertices contains at
+least two leaves
+\end{exo}
+\begin{voc}{}{}\leavevmode
+\begin{enumerate}
+    \item An \textbf{\textcolor{blue}{Euler cycle}} in a graph $G = (V, E)$ is a cycle $C = (v_0, v_1, \dots , v_k)$ (remember that $v_0 = v_k$), with the property that every edge $e \in E$ is traversed exactly once; i.e., for each edge $e \in E$ there exists exactly one
+$i \in \{1, \dots , k\}$ such that $e = \{v_{i-1}, v_i\}$. 
+    \item A graph is called an \textbf{\textcolor{blue}{Euler graph}} if it contains an Euler cycle. 
+    \item An \textbf{\textcolor{blue}{Euler path}} in a graph $G = (V, E)$ is a path $C = (v_0, v_1, \dots , v_k)$ with the property that every edge $e \in E$ is traversed exactly once, but it is not required that $v_0 = v_k$.
+\end{enumerate}
+\end{voc}
+
+\begin{thm}[]
+Let $G = (V, E)$ be a graph.
+\begin{center}
+    G is an Euler graph
+$\Longleftrightarrow$ $G$ is connected and each of its vertices has even degree.
+\end{center}
+\end{thm}
+\begin{exo}[\hypertarget{exo188}{\hyperlink{so188}{1.88}}] 
+Let $G$ be a connected graph with exactly two points of odd
+degree. Use Euler’s Theorem to prove that G contains a walk that traverses
+each edge exactly once.
+\end{exo}
+\begin{voc}{}{}\leavevmode
+\begin{enumerate}
+    \item A circuit $C$ of $G$ is called a \textbf{\textcolor{blue}{Hamilton circuit}} (or Hamilton cycle) if each vertex of $G$ appears on $C$. 
+    \item A graph $G$ is called a \textbf{\textcolor{blue}{Hamilton graph}} if it contains a Hamilton circuit. Hamiltonian cycles / graphs are also called Rudrata cycles / graphs.
+\end{enumerate}
+\begin{center}
+    \includegraphics[width=0.4\textwidth]{330px-Hamiltonian-removebg-preview.png}
+    \end{center}
+\end{voc}
+
+\begin{exo}[\hypertarget{exo190}{\hyperlink{so190}{1.90}}] 
+Let n be an odd number. Show that on an $n \times n$ chess board,
+it is not possible for a knight (horse) to move over the board, hitting each
+square exactly once, while starting and ending in the same square.
+\end{exo}
+\begin{exo}[\hypertarget{exo191}{\hyperlink{so191}{1.91}}] 
+Show that for each n there exists a graph on n vertices
+such that each vertex has degree at least $\frac{1}{2}(n-1)$ and such that it is not a Hamilton graph.
+\end{exo}
+\begin{voc}{}{}\leavevmode
+\begin{enumerate}
+    \item A \textbf{\textcolor{blue}{matching }} M is a subset of the edges ($M \subseteq E$) such that no the edges
+    in M have an end point (=nodes) in common. 
+    \begin{center}
+    \includegraphics[width=0.75\textwidth]{450px-Maximal-matching.svg.png}\\
+    Edges cannot touch each other.
+    \end{center}
+    
+    \item The \textbf{size of the matching} $M$ is the number of edges in it: $\lvert M\rvert$. 
+    \item A \textbf{maximum macthing} in a graph is a matching of maximum size. 
+    \begin{center}
+    \includegraphics[width=0.75\textwidth]{Maximum-matching-labels.svg-removebg-preview.png}
+    \end{center}
+    \item A \textbf{perfect matching} is a matching for which each vertex is the end point of some edge in the matching, i.e., $2\lvert M\rvert = \lvert V \rvert $. \\
+    $\rightsquigarrow$Clearly, a graph with an odd number of vertices can not have a perfect matching.
+\end{enumerate}
+\end{voc}
+
+\begin{exo}[\hypertarget{exox1}{\hyperlink{solx1}{X.1}}] 
+Give an example of a connected graph with an even number
+of vertices that does not have a perfect matching.
+\end{exo}
+\begin{voc}[]\leavevmode
+\begin{enumerate}
+    \item A \textbf{\textcolor{blue}{directed graph}} G is defined by a pair $(V, A)$ where $V$ is a finite set of
+points and $A$ is an ordered set of pairs (=arcs) of two (distinct) points.\\
+An arc $(u, v)$ is considered to be directed from u to v; v is called the head and u is called the tail of the arc. We use the following notation for directed graphs:\\ \\
+$\delta^{-}(v)$: the set of arcs with head v (the arcs towards v)\\
+$\delta^{+}(v)$: the set of arcs with tail v (the arcs leaving v)\\
+$d^{-}(v)$: the number of arcs with head v (so $d^{-}(v) = \lvert \delta^{-}(v) \rvert$)\\
+$d^{+}(v)$: the number of arcs with tail v (so $d^{+}(v) = \lvert \delta^{+}(v) \rvert$)
+
+\begin{center}
+    \begin{tikzpicture} [node distance = 1.5cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,   right = of q0] {};
+\node (q2) [state,  below left  = of q0] {};
+\node (q3) [state,  above left  = of q0] {};
+
+\path [-stealth, thick]
+    (q0) edge[bend left] node {}   (q1)
+    (q1) edge[bend left] node {}   (q0)
+    (q2) edge node {}   (q0)
+    (q2) edge node {}   (q3)
+    (q3) edge node {}   (q0);
+    
+\end{tikzpicture}
+\end{center}
+
+
+\end{enumerate}
+\end{voc}
+\section{Tutorial 2: Network flow algorithms}
+\subsection{Flows}
+\begin{voc} \phantom{a}\\ \\
+    The networks we consider consists of a directed graph $G = (V, A)$, two special nodes $s, t \in V$ which are, respectively, a source and sink of G, and capacities $c_a >0$ on each arc $a \in A$. (Notation: we also write $c_{uv}$ for $a = (u, v)$.)\\ \\
+A \textbf{\textcolor{blue}{flow}} f consists of a number $f_a \ge 0$ for each $a \in A$ such that:
+\begin{itemize}
+    \item the capacity constraints are met: $0 \leq f_a \leq c_a$ for each $a \in A$,
+    \item flow conservation is met, that means, the amount of flow leaving a point u (other than the source or sink) is equal to the amount of flow entering u:
+    \[\sum_{(u,v)\in A} f_{uv} = \sum_{(v,u)\in A} f_{vu}\phantom{a} \mbox{for all}\phantom{a} u\in A\setminus \{ s,t \}\]
+\end{itemize}
+The value of the flow is the nett flow that leaves s:
+\[\sum_{(s,v)\in A} f_{sv} - \sum_{(v,s)\in A} f_{vs}\]
+To simplify notation, we define from now on $f_{uv} = 0$ if $(u, v) \notin A$. Then we can write the value of the flow a
+\[\sum_{(s,v)\in A} f_{sv} - \sum_{(v,s)\in A} f_{vs}\]
+\end{voc}
+\subsection{Cuts}
+\begin{voc}
+
+For a set $U \subset V $ define:\\
+$\delta^-(U)$: the set of arcs with head in U and tail in $V\setminus U$ (arcs towards U )\\
+$\delta^+(U)$: the set of arcs with tail in U and head in $V\setminus U$ (arcs leaving U )\\ \\
+If $U \subset V $ with $s \in U$ and $t \in V$ \ U then $\delta^+(U)$ is called an s-t cut. We call
+this the cut defined by U .\\ \\The next theorem says that the value of the flowis equal to the nett flow across any s-t cut.
+\end{voc}
+\begin{thm}
+    Let f be a flow and $\delta^+(U)$ an s-t cut then
+    \[\mbox{value}(f) = \sum_{a \in \delta^+(U)} f_a - \sum_{a \in \delta^-(U)} f_a\]
+    Equivalently, when we define $f_{uv}$ = 0 if $(u, v) \notin A$, then we can write this theorem as
+    \[\mbox{value}(f) = \sum_{u \in U}  \left( \sum_{v \in V\setminus U} f_{uv} - f_{vu}\right)\]
+\end{thm}
+
+\begin{voc}
+    The \textbf{\textcolor{blue}{capacity of a cut}} $\delta^+(U)$ is the total capacity of the arcs in the cut:
+    \[\mbox{cap}(\delta^+(U))= \sum_{a \in \delta^+(U)} c_a = \sum_{\begin{tabular}{l}
+    $(u,v) \in A:$   \\
+    $u\in U $\\$ v\in V\setminus U$
+\end{tabular}} c_{uv} \]
+To simplify notation we write $\mbox{cap}(\delta^+(U))$ as cap(U) and define $c_{uv} = 0$ if
+$(u, v) \notin A.$ Then we can write the capacity of the cut defined by U as
+\[\mbox{cap}(U) = \sum_{u \in U}  \left( \sum_{v \in V\setminus U} c_{uv} \right)\]
+\end{voc}
+
+\begin{thm}
+    For any s-t flow f and s-t cut $\delta^+(U)$:
+\[\mbox{value}(f) \leq \mbox{cap}(U)\]
+\end{thm}
+The theorm implies that the maximum value of a flow is no more than the
+minimum capacity of a cut. In fact, equality holds and the proof follows
+from the algorithm to find a maximum flow
+
+\subsection{MaxFlow: The Ford-Fulkerson (FF) algorithm}
+
+\begin{voc}
+    The algorithm starts with zero flow: $f_e = 0$ for all $e \in A$. Then, it repeatedly chooses an appropriate path from s to t and increases the flow along the arcs
+of this path as much as possible.\\ 
+It is important to note that it \underline{may be necessary to reduce flow} along an arc
+in order to increase the flow over the path. In the example below, the first
+number is the flow and the second number is the capacity. The maximum
+flow is 2. However, the initial flow f1 of value 1 as shown in the figure cannot
+be extended without reducing the flow on the arc in the middle.
+\begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,   right = of q0] {$3$};
+\node (q2) [state,  right  = of q1] {$4$};
+\node (q3) [state,  right  = of q2] {$t$};
+\node (q4) [state,   above = of q1] {$1$};
+\node (q5) [state,   above = of q2] {$2$};
+
+\path [-stealth, thick]
+    (q0) edge node {1/1}   (q1)
+    (q1) edge node {1/2}   (q2)
+    (q2) edge node {1/1}   (q3)
+    (q0) edge node {0/1}   (q4)
+    (q4) edge node[right] {0/1}   (q2)
+    (q1) edge node[left] {0/1}   (q5)
+    (q5) edge node {0/1}   (q3);
+    
+\end{tikzpicture}
+\end{center}
+Given a flow f, the \textbf{\textcolor{blue}{residual graph}} (or residual network) gives for any arc
+the amount by which the current flow on the arc can be altered. For any arc
+$(u, v) \in A$, there is an arc (u, v) in the residual graph if there is still capacity
+left: $f_{uv} < c_{uv}$. But also, there is a reversed arc (v, u) in the residual graph
+if $f_{uv} > 0$. The residual graph for our example is as follows. The numbers show the amount by which the current flow can be extended, or, if the arc is reversed, the amount by which the current flow can be reduced. The graph
+has an st-path, namely $s, 1, 4, 3, 2, t.$ The minimum capacity on the path is 1. So we add 1 over this path. The new flow has value 2 which is the
+maximum. A more complex example of the FF algorithm is given in the slides.
+\begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,   right = of q0] {$3$};
+\node (q2) [state,  right  = of q1] {$4$};
+\node (q3) [state,  right  = of q2] {$t$};
+\node (q4) [state,   above = of q1] {$1$};
+\node (q5) [state,   above = of q2] {$2$};
+
+\path [-stealth, thick]
+    (q0) edge node {1}   (q1)
+    (q1) edge[bend left] node {1}   (q2)
+    (q2) edge[bend left] node {1}   (q1)
+    (q2) edge node {1}   (q3)
+    (q0) edge node {1}   (q4)
+    (q4) edge node[right] {1}   (q2)
+    (q1) edge node[left] {1}   (q5)
+    (q5) edge node {1}   (q3);
+    
+\end{tikzpicture}
+\end{center}
+\begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,   right = of q0] {$3$};
+\node (q2) [state,  right  = of q1] {$4$};
+\node (q3) [state,  right  = of q2] {$t$};
+\node (q4) [state,   above = of q1] {$1$};
+\node (q5) [state,   above = of q2] {$2$};
+
+\path [-stealth, thick]
+    (q0) edge node {1/1}   (q1)
+    (q1) edge node {0/2}   (q2)
+    (q2) edge node {1/1}   (q3)
+    (q0) edge node {1/1}   (q4)
+    (q4) edge node[right] {1/1}   (q2)
+    (q1) edge node[left] {1/1}   (q5)
+    (q5) edge node {1/1}   (q3);
+    
+\end{tikzpicture}
+\end{center}
+
+\end{voc}
+
+\begin{thm}
+    If all capacities are integer then the FF algorithm terminates and the flow $f_a$ is integer for each arc $a \in A.$
+\end{thm}
+
+\begin{thm}
+    The maximum value of an s-t flow is
+equal to the minimum capacity of s-t cut and FF-algorithm returns both a maximum flow and a minimum cut.
+
+\end{thm}
+\subsection{MaxFlow: Edmonds-Karp-Dinitz (EKD) algorithm}
+The algorithm applies the FF algorithm but in each iteartion it chooses the s-t path in the residual graph with the minimum number of arcs.
+
+\begin{thm}
+    The number of iterations of the EKD algorithm is $O(nm)$
+\end{thm}
+
+\subsection{Mincost flow}
+
+\begin{voc}
+    In the minimum cost flow problem we are given a network $G = (V,A)$ with $s, t \in V$ and a capacity $c_a$ for any arcs a and, in addition, a cost that we denote by $\mbox{cost}_a$. The \textbf{\textcolor{blue}{cost of a flow f}} is:
+    \[\sum_{a\in A} \mbox{cost}_a \cdot f_a\]
+    By this definition, the minimum cost (zero) is attained by sending no flow.
+In the minimum cost flow problem we want to find, for a given flow value v, a flow of minimum cost among the flows of value v.\\ \\
+A mincost flow can be computed as follows:\\First, find any flow f of value
+v, which can be computed by, for example, the FF algorithm.\\ Next, make
+the residual network as in FF but now for each reversed arc also make the cost negative. (Note that sending a flow over a reversed arc in the residual
+corresponds with reducing the flow.) Let C be a cycle in the residual graph.
+If we augment f by sending flow over C then the value of the flow remains
+v. However the cost may change: If the sum of the cost of the arcs in C is
+negative then the cost of the flow will decrease.\\ \\
+\textbf{Mincost flow algorithm: (The cycle cancelling algorithm)}:
+\begin{itemize}
+    \item Step 1: Find a feasible flow of value v. Make the residual graph.
+    \item Step 2: While there is a negative-cost cycle C in the residual graph:\begin{itemize}
+        \item add the largest possible flow over C,
+        \item update the residual graph.
+    \end{itemize}
+\end{itemize}
+
+\end{voc}
+
+\begin{thm}
+    The mincost flow algorithm returns a minimum cost flow.
+\end{thm}
+
+\subsection{Flow exercises}
+\begin{exo}[\hypertarget{exo1}{\hyperlink{sol1}{1}}] 
+Consider the following problem: There are $p$ families going out
+for dinner and together they use $q$ tables. No two members of a family
+should sit at the same table. Family $i$ has $a_i$ people ($i = 1, 2, \dots , p$) and
+table $j$ has $b_j$ chairs ($j = 1, \dots , q$). Formulate this problem as a maximum flow problem. (Make a sketch of the network including the capacities on the arcs.)
+\end{exo} 
+ 
+\begin{exo}[\hypertarget{exo2}{\hyperlink{sol2}{2}}] 
+Explain how you can find a maximum matching in a bipartite
+graph by using a maxflow algorithm. That means, formulate the matching problem as a flow problem and explain how you can deduce the maximum matching from the maximum flow.
+\end{exo} 
+
+\begin{exo}[\hypertarget{exo3}{\hyperlink{sol3}{3}}] 
+In the network below, each first number is the arc’s capacity
+and the second number is its cost per unit flow. Find a minimum cost flow of value 3 by following the steps of the cycle cancelling algorithm. Start with a flow of value 3 over the path s, a, t.
+\begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.6cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,  above right = of q0] {$A$};
+\node (q2) [state,  below right  = of q0] {$B$};
+\node (q3) [state,  between  = q1 and q2] {$C$};
+\node (q4) [state,  right  = of q3] {$D$};
+
+\draw[->] (q0) -- node[midway,left] {3,4} (q1) ;
+\draw[->] (q0) -- node[midway,left] {2,2} (q2) ;
+\draw[->] (q0) -- node[midway,above] {2,2} (q3) ;
+\draw[->] (q1) -- node[midway,above] {3,4} (q4) ;
+\draw[->] (q2) -- node[midway,left] {2,2} (q4) ;
+\draw[->] (q3) -- node[midway,above] {2,2} (q4) ;
+\draw[->] (q2) -- node[midway,left] {1,1} (q3) ;
+
+
+\end{tikzpicture}
+\end{center}
+\end{exo} 
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.6cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,  above right = of q0] {$A$};
+\node (q2) [state,  below right  = of q0] {$B$};
+\node (q3) [state,  between  = q1 and q2] {$C$};
+\node (q4) [state,  right  = of q3] {$D$};
+
+\draw[->] (q0) -- node[midway,left] {3,4} (q1) ;
+\draw[->] (q0) -- node[midway,left] {2,2} (q2) ;
+\draw[->] (q0) -- node[midway,above] {2,2} (q3) ;
+\draw[->] (q1) -- node[midway,above] {3,4} (q4) ;
+\draw[->] (q2) -- node[midway,left] {2,2} (q4) ;
+\draw[->] (q3) -- node[midway,above] {2,2} (q4) ;
+\draw[->] (q2) -- node[midway,left] {1,1} (q3) ;
+
+
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{exo}[\hypertarget{exo4}{\hyperlink{sol4}{4}}] 
+Consider a flow network with integer capacities. Prove or disprove the following statements.\\
+(a) If all capacities are even, then there is maximum flow in which $f_a$ is even for all $a \in A$.
+(b) If all capacities are odd, then there is maximum flow in which $f_a$ is odd for all $a \in A$.
+\end{exo} 
+
+\begin{exo}[\hypertarget{exoa}{\hyperlink{sola}{A}}] 
+Draw a small graph for which Dijkstra’s algorithm does not
+give the shortest path from node A to node B.
+\end{exo} 
+
+\begin{exo}[\hypertarget{exoa}{\hyperlink{sola}{B}}] 
+Fill in the blanks.
+\begin{center}
+    \includegraphics[width=0.5\textwidth]{exob.png}
+\end{center}
+The value of the initial flow $f_0$ is: \\
+The cost of the initial flow is: \\
+The ressiual network has a negative cost cycle.This is cycle: \\
+Assume we add the maximum possible amount of flow overthis cycle to the initial flow $f_0$. Then he cost of the flow decreases by 
+\end{exo} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Solutions}
+
+
+\begin{thm}[1]
+The sum of all the degrees of all the vertices of an graph is equal to twice its number of edges: 
+\[\sum_{v\in V} d(v) = 2\cdot\lvert E \rvert \]
+\begin{proof} 
+We can count the number of edge ends in two different ways:
+\begin{itemize}
+    \item it is the double of the number of edges since each edge having two ends 
+    \item it is also the sum of the degrees of each vertex
+\end{itemize}.
+\end{proof}
+This theorem leads to the handshake lemma: 
+\begin{center}
+    The number of odd-degree vertices is even.
+\end{center}
+\end{thm}
+
+\begin{sol}[\hypertarget{so17}{\hyperlink{exo17}{1.7}}]
+ One graph which is a cycle on all the 5 points denoted by $C_5$:
+ \begin{center}
+    \begin{tikzpicture} [node distance = 2cm, on grid, auto,every state/.style = {draw = blue, fill = blue!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  below right = of q0] {};
+\node (q2) [state,  below left  = of q0] {};
+\node (q3) [state,  below left  = of q1] {};
+\node (q4) [state,  below left  = of q2] {};
+
+\draw[-] (q0) to (q1);
+\draw[-] (q1) to (q2);
+\draw[-] (q0) to (q2);
+\end{tikzpicture}
+\end{center}
+
+
+\end{sol}
+\begin{sol}[\hypertarget{so18}{\hyperlink{exo18}{1.8}}]
+Each node of 3-regular graph has degree 3 so odd. If there is 5 vertices then the number of odd-degre vertices is odd which is absurd according to the handshake lemma. Therefore, none.
+\end{sol}
+\begin{sol}[\hypertarget{so111}{\hyperlink{exo111}{1.11}}]
+Using the Theorem 1, we have:
+\[\sum_{k=1}^{16} d(v_k) = 2m \Longleftrightarrow \sum_{k=1}^{16} 5 = 2m \Longleftrightarrow 5+\dots + 5 = 2m \Longleftrightarrow 5 \cdot 16 = 2m \Longleftrightarrow m = \frac{5\cdot 16}{2}\]
+
+\end{sol}
+\begin{sol}[\hypertarget{so112}{\hyperlink{exo112}{1.12}}]
+Using the Theorem 1, we have:
+\[\sum_{i=1}^{n} d(v_i) = 2m \Longleftrightarrow \sum_{i=1}^{n} k = 2m \Longleftrightarrow k+\dots + 5 = 2m \Longleftrightarrow k \cdot n = 2m \Longleftrightarrow m = \frac{k\cdot n}{2}\]
+\end{sol}
+\begin{sol}[\hypertarget{so116}{\hyperlink{exo116}{1.16}}]
+To prove the handshaking lemma, we'll use the Theorem 1:
+\[\sum_{i=1}^{n} d(v_i) = 2m \Longleftrightarrow \sum_{\footnotesize\mbox{d(v) even}} d(v) + \sum_{\footnotesize\mbox{d(v) odd}} d(v) = 2m \]
+even + even = even $\Longrightarrow \left(\sum\limits_{\footnotesize\mbox{d(v) even}} d(v)\right)$ is an even number.\\ \\
+even + odd = odd but 2m is always even. Therefore 
+$\left(\sum\limits_{\footnotesize\mbox{d(v) even}} d(v)\right)$ has to be even.
+
+\end{sol}
+\begin{sol}[\hypertarget{so119}{\hyperlink{exo119}{1.19}}]
+Using the Theorem 1, we have:
+\[\sum_{i=1}^{n} d(v_i) = 2m \Longleftrightarrow d(v_1) + \cdots + d(v_n) = 2m \Longleftrightarrow \frac{d(v_1) + \cdots + d(v_n)}{n} = \frac{2m}{n}\]
+We proved that on average a vertex is of degree $\frac{2m}{n}$.Hence, there must be a vertex less than $\frac{2m}{n}$ and a vertex of degree above $\frac{2m}{n}$.
+\end{sol}
+
+\begin{sol}[\hypertarget{so121}{\hyperlink{exo121}{1.21}}]
+Assume all vertices has a different degree.\\ \\
+There is $n$ degrees different therefore $\forall v \in V,$ $ d(v) \in \{0,\dots,n-1\}$.\\ \\
+However, there cannot be two vertices $u$, $v$ with $d(u) = 0$ \textbf{and} $d(v) = n - 1$. \\ \\
+So, there are at most $n - 1$ different degrees. \\ \\
+Since we have more vertices than different
+degrees, by the Dirichlet's principle there must be at least two vertices that have the same degree.
+\end{sol}
+\begin{sol}[\hypertarget{so126}{\hyperlink{exo126}{1.26}}]
+Only regular if m = n.
+\end{sol}
+
+\begin{sol}[\hypertarget{so141}{\hyperlink{exo141}{1.41}}]
+There are 2 paths: (1,3) and (1,2,3)
+\begin{center}
+    \begin{tikzpicture} [node distance = 2cm, on grid, auto,every state/.style = {draw = blue, fill = blue!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {$1$};
+\node (q1) [state,  below right = of q0] {$2$};
+\node (q2) [state,  below left  = of q0] {$3$};
+
+\draw[-] (q0) to (q1);
+\draw[-] (q1) to (q2);
+\draw[-] (q0) to (q2);
+\end{tikzpicture}
+\end{center}
+\end{sol}
+\begin{sol}[\hypertarget{so142}{\hyperlink{exo142}{1.42}}]
+Given a starting node and a final node in $K_n$, how many paths there is of size ? Let's work on examples to find a logic:\\
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2cm, on grid, auto,every state/.style = {draw = blue, fill = blue!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {$1$};
+\node (q1) [state,  below right = of q0] {$2$};
+\node (q2) [state,  below left  = of q0] {$3$};
+
+\draw[-] (q0) to (q1);
+\draw[-] (q1) to (q2);
+\draw[-] (q0) to (q2);
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+path of size 1: 1\\
+path of size 2: 2
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2cm, on grid, auto,every state/.style = {draw = blue, fill = blue!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {$1$};
+\node (q1) [state,  right = of q0] {$2$};
+\node (q2) [state,  below = of q0] {$4$};
+\node (q3) [state,  below = of q1] {$3$};
+
+\draw[-] (q0) to (q1);
+\draw[-] (q1) to (q3);
+\draw[-] (q0) to (q2);
+\draw[-] (q2) to (q3);
+\draw[-] (q0) to (q3);
+\draw[-] (q1) to (q2);
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+path of size 1: 1 \\
+path of size 2: 2 \\
+path of size 3: 2 
+\end{minipage}
+
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+    \begin{tikzpicture} [node distance = 2cm, on grid, auto,every state/.style = {draw = blue, fill = blue!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {$1$};
+\node (q1) [state,  below right = of q0] {$2$};
+\node (q2) [state,  below = of q1] {$3$};
+\node (q4) [state,  below left = of q0] {$5$};
+\node (q3) [state,  below = of q4] {$4$};
+
+\draw[-] (q0) to (q1);
+\draw[-] (q1) to (q2);
+\draw[-] (q3) to (q4);
+\draw[-] (q2) to (q3);
+\draw[-] (q0) to (q4);
+\draw[-] (q4) to (q1);
+\draw[-] (q3) to (q1);
+\draw[-] (q4) to (q2);
+\draw[-] (q3) to (q0);
+\draw[-] (q0) to (q2);
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+path of size 1: 1 \\
+path of size 2: 5-2 = 3 \\
+path of size 3: (5-2)(5-3)=6 \\
+path of size 4: (5-2)(5-3)(5-4) = 6\\
+\end{minipage}
+Hence, in general:
+
+\begin{center}
+    path of size 1: 1\\
+    \phantom{a}\vdots\\
+    path of size i: $(n-2)\cdots (n-i)$\\
+    \phantom{a}\vdots\\
+    path of size n-1: $(n-2)\cdots 1$
+\end{center}
+To find the total number of paths, you would have to add all these numbers:
+\[ 1+ \sum_{l=2}^{n-1} \left( \prod_{k=2}^{l} (n-k)\right) \]
+\end{sol}
+\begin{sol}[\hypertarget{so143}{\hyperlink{exo143}{1.43}}]
+Construct a path as follow:\\\\
+Step 1: Take any vertex and call it $v_0$. We build the path $(v_0)$\\
+Step 2: Define i to be the index of the last vertex of our path. \\
+Step 3: We add $v_{i+1}$ to the path where $v_{i+1}$ is in the neighborhood of $v_i$ and $v_{i+1} \notin \{v_0,\dots,v_i\}$ 
+Step 4: Repeat 2 \& 3 while $i \leq k$\\ \\
+The existence of $v_{i+1}$ is guaranteed since $v_i$ has at least k neighbors and $i<k$.When $i=k$, we have the path $(v_0,\dots,v_k)$
+\end{sol}
+\begin{sol}[\hypertarget{so147}{\hyperlink{exo147}{1.47}}]
+By induction on n, we will prove 
+\[ \mbox{P(n) : "A connected graph on n vertices contains at least } n-1 \mbox{ edges} \]
+\textbf{Base case}: for n = 1, we have 0 edges. Hence P(1) is true.\\ \\
+\textbf{Induction hypothesis}: Assume P(n) is true: every connected graph with n vertices has at least n-1 edges.\\ \\
+\textbf{Induction step}: Let $G=(V,E)$ be a connected graph with n+1 vertices: $v_1,\dots,v_{n+1}$.\\ \\
+Define $G'=(V\setminus\{v_l\},E\setminus \{v_l,v_i\})$ with $1\leq i \leq n+1$ and $v_l$ any vertice of G such that $d(v_k) = \min \{d(v)\phantom{a} | \phantom{a} v \in E \}$.
+$G$ has n vertices and G is connected.\\ \\
+By our induction hypothesis, it follows that G' has n-1 edges. Moreover G is a connected graph therefore there is at least 1 edge between $v_l$ and another vertice.Therefore G has at least $n-1+1 = n$ edges: P(n+1) is true.\\ \\
+Hence by mathematical induction P(n) is correct for all positive integers n.\\ \\
+
+
+
+\end{sol}
+\begin{sol}[\hypertarget{so148}{\hyperlink{exo148}{1.48}}]
+No since a non-connected graph on 6 vertices contains at most 10 edges.
+\end{sol}
+\begin{sol}[\hypertarget{so159}{\hyperlink{exo150}{1.50}}]
+Let $G=(V,E)$ be a non-connected graph on n vertices.\\Define $G_1=(V_1,E_1)$ and $G_2=(V_2,E_2)$ with:
+\[\left(V_1,V_2 \subset V \right) \wedge \left(\forall \{u,v\} \in V,\phantom{a} u \in V_1\phantom{a}\mbox{and}\phantom{a} v \in V_2 \Rightarrow \{u,v\} = \emptyset\right) \]
+In other words, there is no edge linking a vertice of $V_1$ to a vertice of $V_2$.\\
+Let $\lvert V_1 \rvert = k$. Therefore $\lvert V_2 \rvert = \lvert V \setminus V_1 \rvert = n-k$.
+\end{sol}
+
+\begin{sol}[\hypertarget{so159}{\hyperlink{exo159}{1.59}}]
+Let $G_1 = (V_1, E_1)$ and $G_2 = (V_2, E_2)$ are two distinct components of G.\\ \\
+$G_1$ is a maximal connected subgraph so there is no other connected subgraph $G' = (V', E')$ with $V_1 \subseteq V'$ and $E_1 \subseteq E'$.\\ \\
+In particular $G_2$ is a (maximal) connected subgraph thus $V_1 \not\subseteq V_2$ and $E_1 \not\subseteq E_2$.\\ \\
+$G_2$ is a maximal connected subgraph so there is no other connected subgraph $G' = (V', E')$ with $V_2 \subseteq V'$ and $E_2 \subseteq E'$.\\ \\
+In particular $G_1$ is a (maximal) connected subgraph thus $V_2 \not\subseteq V_1$ and $E_2 \not\subseteq E_1$.
+
+\[\left( V_1 \not\subseteq V_2 \wedge V_2 \not\subseteq V_1\right) \Longleftrightarrow V_1 \cap V_2 = \emptyset \phantom{a} \wedge \phantom{a} \left( E_1 \not\subseteq E_2 \wedge E_2 \not\subseteq E_1\right) \Longleftrightarrow E_1 \cap E_2 = \emptyset\]
+\end{sol}
+\begin{sol}[\hypertarget{so163}{\hyperlink{exo163}{1.63}}]
+Let $G=(E,V)$ be a graph with $\forall v \in V,$ $d(v) \geq \frac{n-1}{2}$.\\ \\
+Assume it's not connected. G can be partitioned into 2,3,.., n components.\\
+Let C be a component of G therefore it's a (maximal) connected subgraph.\\ 
+If we split into 2 components, $\lvert C \rvert = \frac{n}{2}$.\\
+If we split into 3 components, $\lvert C \rvert = \frac{n}{3}$. (and so on until n)\\
+The best case scenario is into 2 components therefore C has at most $\frac{n}{2}$ vertices. \\
+However, all vertices of C can have at most $\frac{n}{2}-1$ edges. But $\frac{n}{2}-1 < \frac{n}{2}-\frac{1}{2} = \frac{n-1}{2}$.\\ \\
+Since all vertices of G had to be greater or equal $\frac{n-1}{2}$, it's absurd to have at most our vertices in C of degree $\frac{n}{2}-1$. Therefore G is connected.
+\end{sol}
+\begin{sol}[\hypertarget{so167}{\hyperlink{exo167}{1.67}}]
+Let $G=(V,E)$ be a graph where $\forall v \in V,$ $d(v) \ge 2$.\\ \\
+Step 1: Start anywhere by coloring a vertex.\\
+Step 2: Take any usued edges and color the vertex. \\
+Step 3: Repeat step 2 until return to a vertex. \\ \\
+We'll be able to continue in the worst case until we have covered all the vertices once. Since each vertex has degree at least 2, so there will be an unused edge to exit on. If you ever return to a vertex where you've been, you've got a cycle.
+\end{sol}
+\begin{sol}[\hypertarget{so175}{\hyperlink{exo175}{1.75}}]
+Assume that between any pair of vertices in a tree there is 2  path: $p_1 = (v_k,...,v_l)$ and $p_2=(v_k,...,v_l)$ \\
+Therefore, by merging $p_1$ and the reversed path $p_2$ without its first vertice, we got a circle. That's absurd. Therefore in any pair of vertices in a tree there is exaclty one path.
+\end{sol}
+\begin{sol}[\hypertarget{so176}{\hyperlink{exo176}{1.76}}]
+Let  G be a tree without leaf. Therefore all vertices are of degree 2. By the exercise 1.67, G must contains a circuit.Absurd since G is a (connected) forest.\\
+Thus G always has a leaf.
+\end{sol}
+\begin{sol}[\hypertarget{so177}{\hyperlink{exo177}{1.77}}]
+By induction, we will prove:\\
+
+\begin{center}
+    P(n):" Every tree on n vertices has exactly $n - 1$ edges".
+\end{center}
+\textbf{Base case}: for n = 1, we have 0 edges. Hence P(1) is true.\\ \\
+\textbf{Induction hypothesis}: Assume P(n) is true: every tree on n vertices has exactly n-1 edges.\\ \\
+\textbf{Induction step}: Let $G = (V, E)$ be a tree with n+1 vertices.By the exercise 1.76 there must be a leaf somewhere in G, remove it. By our induction hypothesis, the new graph has n-1 edges, if we put back our leaf it's clear that G has n-1+1 = n edges. Therefore P(n+1) is true.\\ \\
+Hence by mathematical induction P(n) is correct for all positive integers n.
+\end{sol}
+\begin{sol}[\hypertarget{so180}{\hyperlink{exo180}{1.80}}]
+By the Theorem 1,
+\[\sum_{v\in V} d(v) = 2\cdot\lvert E \rvert = 2(n-1) \]
+Therefore the average degree of a vertice in a tree is $\frac{2n-2}{n}$.\\ \\
+Assume there is only one leaf in a tree.Then all other vertices should be of at least degree 2. (not 0 since a tree is a connected forest)\\ 
+Therefore the minimum average of a tree is:
+\[\min\left( \frac{1+d(v_2)+\dots+d(v_2)}{n}\right)=\frac{1+2(n-1)}{n} = \frac{2n +1}{n}\]
+However 
+\[\frac{2n-2}{n} <\frac{2n +1}{n} \]
+Our average is too big given our assumption therefore there must be more than 1 leaf.
+
+\end{sol}
+\begin{sol}[\hypertarget{so188}{\hyperlink{exo188}{1.88}}]
+Let G be a connected graph with exactly two vertices of odd
+degree.\\
+Add one linking edge between those two vertices of odd degree.Now all vertices have an even degree.\\
+Therefore, by the Euler Theorem there is an Euler cycle.\\
+By deleting the linking edge, the Euler cycle became an Euler path.\\
+\end{sol}
+\begin{sol}[\hypertarget{so190}{\hyperlink{exo190}{1.90}}]
+Let n be an odd number. We want to show that on an $n \times n$ chess board,it is not possible for a knight (horse) to move over the board, hitting each square exactly once, while starting and ending in the same square.\\ \\
+A knight moves from white to black and vice versa. Since n is
+odd, $n^2$ is odd. If it starts on black, then it is on
+white after n 2 moves. But then it cannot be back at its starting point.
+\end{sol}
+\begin{sol}[\hypertarget{so191}{\hyperlink{exo191}{1.91}}]
+We want to prove the existence of a graph G  with n vertices with $\forall v \in V, d(v) \ge \frac{n}{2}-1$ such that there is no Hamilton Circuit.\\
+If n is even then take two components with n/2 vertices of degree $\frac{n}{2}-1$.\\
+If n is odd then take two complete graphs on $n/2$ vertices and merge two vertices to have only one.All vertices will be of degree  $\frac{n}{2}-1$ except the merged vertex that will have $n-2$
+
+\end{sol}
+
+\begin{sol}[\hypertarget{solx1}{\hyperlink{exox1}{X.1}}]\leavevmode
+\begin{center}
+    \begin{tikzpicture} [node distance = 1.5cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.4cm}]
+ 
+\node (q0) [state] {};
+\node (q1) [state,  below right = of q0] {};
+\node (q2) [state,  below left  = of q0] {};
+\node (q3) [state,  above  = of q0] {};
+
+
+\draw[-] (q0) to (q1);
+\draw[-] (q0) to (q3);
+\draw[-] (q0) to (q2);
+\end{tikzpicture}
+\end{center}
+\end{sol}
+
+\begin{sol}[\hypertarget{sol1}{\hyperlink{exo1}{1}}]
+ Take vertices $(v_1, v_2, \dots , v_p)$ where $v_i$ corresponds with family $i$. \\
+ For each table j, take a vertex $w_j$ . Further add points
+$s$ and $t$. \\ \\ 
+There is an arc $(s, v_i)$ with capacity $a_i$ for each $i \in\{1,\dots, p\}$.\\
+There is an arc $(w_j , t)$ with capacity $b_j$ for each $j \in \{1, \dots , q\}$. \\
+For each pair (i, j), there is an arc ($vi, wj )$ with capacity 1.\\ \\
+An upper bound on the maximum flow vale is $\sum\limits_{i} a_i$ since that is the maximum flow that can leave s. If there exists a flow of value $\sum\limits_{i} a_i$ then this
+immediately give a solution to the dinner problem since, by Theorem 3, the flow on each arc $(v_i, w_j )$ is either 0 or 1. 
+If the flow value on $(v_i, w_j )$ is one then a person from family i is seated at table j.
+\end{sol}
+
+\begin{sol}[\hypertarget{sol2}{\hyperlink{exo2}{2}}]\phantom{a}\\
+\begin{center}
+    \includegraphics[width=0.5\textwidth]{bip.png}
+\end{center}
+\end{sol}
+
+\begin{sol}[\hypertarget{sol3}{\hyperlink{exo3}{3}}]\phantom{a}\\
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.6cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,  above right = of q0] {$A$};
+\node (q2) [state,  below right  = of q0] {$B$};
+\node (q3) [state,  between  = q1 and q2] {$C$};
+\node (q4) [state,  right  = of q3] {$D$};
+
+\draw[->] (q0) -- node[midway,left] {3/ 3,4 } (q1) ;
+\draw[->] (q0) -- node[midway,left] {2,2} (q2) ;
+\draw[->] (q0) -- node[midway,above] {2,2} (q3) ;
+\draw[->] (q1) -- node[midway,above] {3/3,4} (q4) ;
+\draw[->] (q2) -- node[midway,left] {2,5} (q4) ;
+\draw[->] (q3) -- node[midway,above] {3,3} (q4) ;
+\draw[->] (q2) -- node[midway,left] {1,1} (q3) ;
+
+
+\end{tikzpicture}
+\end{center}
+Cost: $3\cdot 4 + 3 \cdot 4 = 24$
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.6cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,  above right = of q0] {$A$};
+\node (q2) [state,  below right  = of q0] {$B$};
+\node (q3) [state,  between  = q1 and q2] {$C$};
+\node (q4) [state,  right  = of q3] {$D$};
+
+\draw[->] (q1) -- node[midway,left] {3,-4 } (q0) ;
+\draw[->] (q0) -- node[midway,left] {2,2} (q2) ;
+\draw[->] (q0) -- node[midway,above] {2,2} (q3) ;
+\draw[->] (q4) -- node[midway,above] {3,-4} (q1) ;
+\draw[->] (q2) -- node[midway,left] {2,5} (q4) ;
+\draw[->] (q3) -- node[midway,above] {3,3} (q4) ;
+\draw[->] (q2) -- node[midway,left] {1,1} (q3) ;
+
+
+\end{tikzpicture}
+\end{center}
+Residual graph\\
+Look for a negative circle: $-4+2+3-4 = -3$ and the residual capacity is 2. 
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.6cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,  above right = of q0] {$A$};
+\node (q2) [state,  below right  = of q0] {$B$};
+\node (q3) [state,  between  = q1 and q2] {$C$};
+\node (q4) [state,  right  = of q3] {$D$};
+
+\draw[->] (q0) -- node[midway,left] {1/ 3,4 } (q1) ;
+\draw[->] (q0) -- node[midway,left] {2,2} (q2) ;
+\draw[->] (q0) -- node[midway,above] {2/2,2} (q3) ;
+\draw[->] (q1) -- node[midway,above] {1/3,4} (q4) ;
+\draw[->] (q2) -- node[midway,left] {2,5} (q4) ;
+\draw[->] (q3) -- node[midway,above] {2/3,3} (q4) ;
+\draw[->] (q2) -- node[midway,left] {1,1} (q3) ;
+
+
+\end{tikzpicture}
+\end{center}
+Cost: $24 -2\cdot 3= 18$
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.6cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,  above right = of q0] {$A$};
+\node (q2) [state,  below right  = of q0] {$B$};
+\node (q3) [state,  between  = q1 and q2] {$C$};
+\node (q4) [state,  right  = of q3] {$D$};
+
+\draw[->] (q0) to[bend left=15] node[midway,left] {2,4 } (q1) ;
+\draw[->] (q1) to[bend left=15] node[midway,left] {2,-4 } (q0) ;
+\draw[->] (q0) -- node[midway,left] {2,2} (q2) ;
+\draw[->] (q3) -- node[midway,above] {2,-2} (q0) ;
+\draw[->] (q1) to[bend left=15] node[midway,above] {2,4} (q4) ;
+\draw[->] (q4) to[bend left=15] node[midway,above] {1,-4} (q1) ;
+\draw[->] (q2) -- node[midway,left] {2,5} (q4) ;
+\draw[->] (q3) to[bend left=15] node[midway,above] {1,3} (q4) ;
+\draw[->] (q4) to[bend left=15] node[midway,above] {2,-3} (q3) ;
+\draw[->] (q2) -- node[midway,left] {1,1} (q3) ;
+
+
+\end{tikzpicture}
+\end{center}
+Residual graph\\
+Look for a negative circle: $-4-4+2+1+3 = -2$ and the residual capacity is 1. 
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.6cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,  above right = of q0] {$A$};
+\node (q2) [state,  below right  = of q0] {$B$};
+\node (q3) [state,  between  = q1 and q2] {$C$};
+\node (q4) [state,  right  = of q3] {$D$};
+
+\draw[->] (q0) -- node[midway,left] { 3,4 } (q1) ;
+\draw[->] (q0) -- node[midway,left] {1/2,2} (q2) ;
+\draw[->] (q0) -- node[midway,above] {2/2,2} (q3) ;
+\draw[->] (q1) -- node[midway,above] {3,4} (q4) ;
+\draw[->] (q2) -- node[midway,left] {2,5} (q4) ;
+\draw[->] (q3) -- node[midway,above] {3/3,3} (q4) ;
+\draw[->] (q2) -- node[midway,left] {1/1,1} (q3) ;
+
+
+\end{tikzpicture}
+\end{center}
+Cost: $18-2= 16$
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.6cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,  above right = of q0] {$A$};
+\node (q2) [state,  below right  = of q0] {$B$};
+\node (q3) [state,  between  = q1 and q2] {$C$};
+\node (q4) [state,  right  = of q3] {$D$};
+
+\draw[->] (q0) -- node[midway,left] { 3,4 } (q1) ;
+\draw[->] (q3) -- node[midway,above] {2,-2} (q0) ;
+\draw[->] (q0) to[bend left=10] node[midway,above] {1,2} (q2) ;
+\draw[->] (q2) to[bend left=10] node[midway,left] {1,-2} (q0) ;
+\draw[->] (q1) -- node[midway,above] {3,4} (q4) ;
+\draw[->] (q2) -- node[midway,left] {2,5} (q4) ;
+\draw[->] (q4) -- node[midway,above] {3,-3} (q3) ;
+\draw[->] (q3) -- node[midway,left] {1,-1} (q2) ;
+
+
+\end{tikzpicture}
+\end{center}
+Residual graph\\
+No negative circle hence 16 is the minimal cost flow.
+\end{minipage}
+\end{sol}
+
+\begin{sol}[\hypertarget{sol4}{\hyperlink{exo4}{4}}]
+(a) True. Divide all capacities by 2. Theorem 3 says that there is an optimalflow with integer flow values fa on each arc. Now multiply all $f_a$ by two.\\
+(b) Not true. This is a counter example where  All edges have odd capacity, but the maxflow is even.
+\end{sol}
+\begin{sol}[\hypertarget{sola}{\hyperlink{exoa}{A}}]
+\phantom{a}\\
+\begin{center}
+    \begin{tikzpicture} [node distance = 3cm, on grid, auto,every state/.style = {draw = black, fill = white!10,minimum size=0.6cm}]
+ 
+\node (q0) [state] {$s$};
+\node (q1) [state,  above right = of q0] {$A$};
+\node (q2) [state,  below right  = of q0] {$B$};
+
+\draw[->] (q0) -- node[midway,left] { 1 } (q1) ;
+\draw[->] (q0) -- node[midway,below] {2} (q2) ;
+\draw[->] (q2) -- node[midway,right] {-2} (q1) ;
+
+
+\end{tikzpicture}
+\end{center}
+\end{sol}
+\begin{sol}[\hypertarget{solb}{\hyperlink{exob}{B}}]\phantom{a}\\
+The value of the initial flow $f_0$ is:$2+2$ \\
+The cost of the initial flow is:$16+6=22$ \\
+The ressiual network has a negative cost cycle.This is cycle:$abct$\\
+Assume we add the maximumpossible amount of flow overthis cycle to the initial flow $f_0$. Then he cost of the flow decreases by $6$.
+\end{sol}
+
+\end{document}
